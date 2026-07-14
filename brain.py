@@ -1,5 +1,9 @@
 import math
 
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
 def box(n):
     if n >= 0:
         return int(n)
@@ -9,11 +13,6 @@ def box(n):
         else:
             return int(n)-1
             
-def sin(theta):
-    return math.sin(theta)
-   
-def cos(theta):
-    return math.cos(theta)
     
 def fact(n):
     return math.factorial(n)
@@ -26,8 +25,6 @@ def power(a,b):
     
 def cube(n):
     return n**3
-def sq(n):
-    return n**2
 
 class Trigonometry:
     def __init__(self):
@@ -60,3 +57,34 @@ class Trigonometry:
 
 def square(n):
   return n**2
+
+@app.route('/calculate', methods=['GET'])
+def calculate():
+    # Grab the value of 'n' that your JavaScript sent over
+    n_param = request.args.get('n', '')
+    
+    if not n_param:
+        response = jsonify({"error": "No value provided"})
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response, 400
+        
+    try:
+        #Convert the input string to a number and call your square()
+        n_value = float(n_param)
+        result_value = square(n_value)
+        
+        #Format the response as JSON
+        response = jsonify({"result": result_value})
+        
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
+
+    except ValueError:
+        response = jsonify({"error": "Invalid number format"})
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response, 400
+
+#Start the Backend Server
+if __name__ == '__main__':
+    
+    app.run(port=5000, debug=True)
