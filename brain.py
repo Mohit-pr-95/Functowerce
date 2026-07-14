@@ -60,8 +60,3 @@ class Trigonometry:
 
 def square(n):
   return n**2
-
-def comb(n,r):
-    return int(fact(n)/(fact(r)*fact(n-r)))
-
-print(comb(4,2))
