@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Functowerce - Learn Mathematical Functions</title>
+    <meta name="description" content="Functowerce is the only place you need to learn mathematical functions in a comprehensive and visual way.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- App Wrapper -->
+    <div class="site-wrapper">
+        
+        <!-- Top Navigation / Header -->
+        <header class="content-top">
+            <div class="left-section">
+                <!-- Menu Button -->
+                <button class="menu-btn" id="btn-menu" aria-label="Toggle Menu">
+                    <span class="line"></span>
+                    <span class="line"></span>
+                    <span class="line"></span>
+                </button>
+                
+                <!-- Logo & Subtitle Group -->
+                <div class="logo-group">
+                    <h1 class="logo-title"><a href="index.html" class="logo-link">Functowerce</a></h1>
+                    <p class="logo-tagline">Only place you needed to learn mathematical functions in very comprehensive way</p>
+                </div>
+            </div>
+            
+            <!-- Profile Button -->
+            <button class="profile-btn" id="btn-profile" aria-label="User Profile">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Sub-Header / Tagline -->
+        <section class="magic-bar">
+            <p class="magic-text"><strong>Functions</strong> - Magic of mathematics</p>
+        </section>
+
+        <!-- Main Body Grid -->
+        <main class="main-body">
+            
+            <!-- Left Side: Textbook Content -->
+            <article class="content-section">
+                <div class="academic-text">
+                    <p>
+                        In mathematics, a <strong>function</strong> from a set X to a set Y assigns to each element of X exactly one element of Y.<span class="citation" data-citation="1">[1]</span> 
+                        The set X is called the <strong>domain</strong> of the function<span class="citation" data-citation="2">[2]</span> 
+                        and the set Y is called the <strong>codomain</strong> of the function.<span class="citation" data-citation="3">[3]</span>
+                    </p>
+                    <p>
+                        Functions were originally the idealization of how a varying quantity depends on another quantity. For example, the position of a planet is a function of time. Historically, the concept was elaborated with the infinitesimal calculus at the end of the 17th century, and, until the 19th century, the functions that were considered were differentiable (that is, they had a high degree of regularity).
+                    </p>
+                    <p>
+                        The concept of a function is often denoted by a letter such as <em>f</em>, <em>g</em> or <em>h</em>. The value of a function <em>f</em> at an element <em>x</em> of its domain (that is, the element of the codomain that is associated with <em>x</em>) is denoted by <em>f(x)</em>; for example, the value of <em>f</em> at <em>x</em> = 4 is denoted by <em>f</em>(4). Commonly, a specific function is defined by means of an expression depending on <em>x</em>, such as <code>f(x) = x² + 1</code>; in this case, some computation, called function evaluation, may be needed for deducing the value of the function at a particular value; for example, if <code>f(x) = x² + 1</code>, then <code>f(4) = 4² + 1 = 17</code>.
+                    </p>
+                    <!-- LaTeX Style Math Display Block -->
+                    <div class="math-block" aria-label="Mathematical formula showing function evaluation">
+                        {\displaystyle f(4)=4^{2}+1=17.}
+                    </div>
+                    <p>
+                        Given its domain and its codomain, a function is uniquely represented by the set of all pairs <em>(x, f(x))</em>, called the <strong>graph of the function</strong>, a popular means of illustrating the function. When the domain and the codomain are sets of real numbers, each such pair may be thought of as the Cartesian coordinates of a point in the plane.
+                    </p>
+                    <p>
+                        Functions are widely used in science, engineering, and in most fields of mathematics. It has been said that functions are <em>"the central objects of investigation"</em> in most fields of mathematics.
+                    </p>
+                    <p>
+                        The concept of a function has evolved significantly over centuries, from its informal origins in ancient mathematics to its formalization in the 19th century. See <a href="https://en.wikipedia.org/wiki/History_of_the_function_concept" target="_blank" rel="noopener">History of the function concept</a> for details.
+                    </p>
+                    <div class="source-attribution">
+                        Source: <a href="https://en.wikipedia.org/wiki/Function_(mathematics)" target="_blank" rel="noopener">Wikipedia</a>
+                    </div>
+                </div>
+
+                <!-- Footnotes section -->
+                <footer class="footnotes-area">
+                    <div class="footnote-item" id="fn-1">
+                        <span class="fn-num">[1]</span>
+                        <p class="fn-desc">Halmos, Paul R. (1974). <em>Naive Set Theory</em>. Springer-Verlag. A function is defined as a relation satisfying specific uniqueness conditions.</p>
+                    </div>
+                    <div class="footnote-item" id="fn-2">
+                        <span class="fn-num">[2]</span>
+                        <p class="fn-desc">The set of all inputs for which the function is defined and produces a valid output.</p>
+                    </div>
+                    <div class="footnote-item" id="fn-3">
+                        <span class="fn-num">[3]</span>
+                        <p class="fn-desc">The set of target values into which the function's output is constrained to fall.</p>
+                    </div>
+                </footer>
+            </article>
+
+            <!-- Right Side: Interactive Visual Playground -->
+            <section class="interactive-playground">
+                
+                <!-- Tab Controls -->
+                <div class="tab-controls">
+                    <button class="tab-btn active" data-tab="mapping">Set Mapping (X &rarr; Y)</button>
+                    <button class="tab-btn" data-tab="grapher">Interactive Grapher</button>
+                </div>
+
+                <!-- Tab 1: Set Mapping Visualizer -->
+                <div class="tab-content active" id="tab-mapping">
+                    <div class="mapping-container">
+                        <!-- Domain Set X -->
+                        <div class="set-container" id="set-x">
+                            <span class="set-title">Domain (X)</span>
+                            <div class="set-elements">
+                                <div class="element-node" data-val="1">x₁</div>
+                                <div class="element-node" data-val="2">x₂</div>
+                                <div class="element-node" data-val="3">x₃</div>
+                                <div class="element-node" data-val="4">x₄</div>
+                            </div>
+                        </div>
+
+                        <!-- Connector Lines Canvas -->
+                        <svg class="mapping-svg" id="mapping-svg">
+                            <path class="map-line" id="line-1" d="" />
+                            <path class="map-line" id="line-2" d="" />
+                            <path class="map-line" id="line-3" d="" />
+                            <path class="map-line" id="line-4" d="" />
+                        </svg>
+
+                        <!-- Codomain Set Y -->
+                        <div class="set-container" id="set-y">
+                            <span class="set-title">Codomain (Y)</span>
+                            <div class="set-elements">
+                                <div class="element-node y-node" data-val="a">y₁</div>
+                                <div class="element-node y-node" data-val="b">y₂</div>
+                                <div class="element-node y-node" data-val="c">y₃</div>
+                                <div class="element-node y-node" data-val="d">y₄</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="interactive-note">
+                        Hover over a domain element in <strong>X</strong> to see how it uniquely maps to <strong>Y</strong>.
+                    </div>
+                </div>
+
+                <!-- Tab 2: Interactive Function Grapher -->
+                <div class="tab-content" id="tab-grapher">
+                    <div class="grapher-card">
+                        <div class="grapher-header">
+                            <select id="select-function" class="style-select">
+                                <option value="linear">Linear: f(x) = x</option>
+                                <option value="quadratic">Quadratic: f(x) = x²</option>
+                                <option value="sine">Sine: f(x) = sin(x)</option>
+                                <option value="exponential">Exponential: f(x) = 2ˣ</option>
+                            </select>
+                        </div>
+                        
+                        <div class="canvas-wrapper">
+                            <canvas id="graph-canvas" width="300" height="220"></canvas>
+                        </div>
+
+                        <div class="slider-controls">
+                            <div class="slider-row">
+                                <label for="x-input">Input (x): <span id="x-val-label">0.0</span></label>
+                                <input type="range" id="x-input" min="-3" max="3" step="0.1" value="0">
+                            </div>
+                            <div class="result-display">
+                                Output f(x) = <span id="y-val-label" class="highlight-val">0.0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+
+        <!-- Function Selection Section -->
+        <section class="function-selection" id="function-selection">
+            <h2 class="selection-title">Know more about some common functions</h2>
+            <div class="function-grid">
+                <a href="quadratic.html" class="function-card active-card">
+                    <span class="card-badge">Explore</span>
+                    <div class="card-formula">y = x²</div>
+                    <div class="card-name">Quadratic Function</div>
+                </a>
+                <a href="#" class="function-card" onclick="alert('Greatest Integer Function page is coming soon!'); return false;">
+                    <span class="card-badge">Soon</span>
+                    <div class="card-formula">y = [x]</div>
+                    <div class="card-name">Greatest Integer Function</div>
+                </a>
+                <a href="#" class="function-card" onclick="alert('Fractional Part Function page is coming soon!'); return false;">
+                    <span class="card-badge">Soon</span>
+                    <div class="card-formula">y = {x}</div>
+                    <div class="card-name">Fractional Part Function</div>
+                </a>
+                <a href="#" class="function-card" onclick="alert('Sine Function page is coming soon!'); return false;">
+                    <span class="card-badge">Soon</span>
+                    <div class="card-formula">y = sin(x)</div>
+                    <div class="card-name">Sine Function</div>
+                </a>
+                <a href="#" class="function-card" onclick="alert('Cosine Function page is coming soon!'); return false;">
+                    <span class="card-badge">Soon</span>
+                    <div class="card-formula">y = cos(x)</div>
+                    <div class="card-name">Cosine Function</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Sidebar Navigation Drawer -->
+        <aside class="sidebar-drawer" id="sidebar-drawer">
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item active">Introduction</a>
+                <a href="quadratic.html" class="nav-item">Quadratic Function (y=x²)</a>
+                <a href="#function-selection" class="nav-item">Common Functions</a>
+                <a href="#" class="nav-item">Types of Functions</a>
+                <a href="#" class="nav-item">Domain & Codomain</a>
+                <a href="#" class="nav-item">Inverse Functions</a>
+            </nav>
+        </aside>
+        
+        <!-- Profile Dropdown Modal -->
+        <div class="profile-modal" id="profile-modal">
+            <div class="profile-header">
+                <h3>Welcome Scholar</h3>
+                <p>Track your mathematical progress</p>
+            </div>
+            <ul class="profile-links">
+                <li><a href="#">My Dashboard</a></li>
+                <li><a href="#">Bookmarks</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

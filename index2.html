@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maglev Hyperloop V-100 Simulator</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Glassmorphism custom classes */
+        .glass-panel {
+            background: rgba(10, 15, 30, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
+        }
+
+        .glass-panel-danger {
+            background: rgba(30, 5, 10, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 0, 85, 0.3);
+            box-shadow: 0 0 25px rgba(255, 0, 85, 0.2);
+        }
+
+        /* Custom scrollbar for HUD logs */
+        .custom-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: rgba(0, 243, 255, 0.05);
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: rgba(0, 243, 255, 0.3);
+            border-radius: 2px;
+        }
+
+        /* Glow animation for critical systems */
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.8; text-shadow: 0 0 5px #00f3ff, 0 0 10px #00f3ff; }
+            50% { opacity: 1; text-shadow: 0 0 12px #00f3ff, 0 0 25px #00f3ff; }
+        }
+        .glow-cyan {
+            animation: pulse-glow 2s infinite;
+        }
+        
+        .glow-red {
+            text-shadow: 0 0 8px #ff0055, 0 0 15px #ff0055;
+        }
+
+        /* Scanline effect overlay */
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.25) 50%
+            ), linear-gradient(
+                90deg,
+                rgba(255, 0, 0, 0.06),
+                rgba(0, 255, 0, 0.02),
+                rgba(0, 0, 255, 0.06)
+            );
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="bg-black text-slate-100 overflow-hidden w-screen h-screen">
+
+    <!-- Scanline Filter -->
+    <div class="scanlines"></div>
+
+    <!-- WebGL Canvas Container -->
+    <div id="canvas-container" class="absolute inset-0 w-full h-full z-0"></div>
+
+    <!-- SOUND INSTRUCTIONS MODAL (Required due to browser audio autostart policies) -->
+    <div id="audio-modal" class="absolute inset-0 flex items-center justify-center bg-black/90 z-50 transition-all duration-500">
+        <div class="glass-panel max-w-md p-8 rounded-2xl border-cyan-500/40 text-center mx-4">
+            <div class="w-20 h-20 mx-auto mb-6 flex items-center justify-center rounded-full bg-cyan-500/10 border border-cyan-500/40 animate-pulse">
+                <svg class="w-10 h-10 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-cyan-400 mb-2 tracking-wider uppercase">Audio System Ready</h2>
+            <p class="text-sm text-slate-400 mb-6 leading-relaxed">
+                This simulation generates dynamic synth soundtracks and supersonic engine frequencies on the fly based on your actual speed.
+            </p>
+            <button id="btn-init" class="w-full py-3 bg-cyan-500 hover:bg-cyan-400 active:bg-cyan-600 text-black font-bold uppercase tracking-widest rounded-lg transition-colors border border-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.5)]">
+                Initialize Systems
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN HUD USER INTERFACE -->
+    <div id="hud" class="absolute inset-0 z-20 flex flex-col justify-between p-4 md:p-6 pointer-events-none opacity-0 transition-opacity duration-1000">
+        
+        <!-- Top Row: Global Stats & Active Systems -->
+        <header class="flex justify-between items-start w-full">
+            <!-- Left Side: System Blueprint & Telemetries -->
+            <div class="glass-panel p-4 rounded-xl flex flex-col gap-1 text-xs tracking-wider text-cyan-400 w-64 md:w-80 pointer-events-auto">
+                <div class="flex justify-between items-center border-b border-cyan-500/20 pb-2 mb-2">
+                    <span class="font-bold text-sm text-white">MAGLEV HYPERLOOP V-100</span>
+                    <span class="px-2 py-0.5 bg-cyan-500/10 rounded border border-cyan-500/30 text-[10px] animate-pulse">GRID CONNECTED</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">STATUS:</span>
+                    <span id="txt-status" class="font-semibold text-cyan-300">STABLE CRUISE</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">CABIN PRESSURE:</span>
+                    <span class="font-semibold text-white">101.3 kPa</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">TUBE SEAL VACUUM:</span>
+                    <span id="txt-vacuum" class="font-semibold text-white">0.05 kPa (99.9% PURE)</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">LEVITATION HEIGHT:</span>
+                    <span id="txt-levitation" class="font-semibold text-white">25.0 mm</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">GRID DRAW:</span>
+                    <span id="txt-power" class="font-semibold text-white">4.2 MW</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">LATERAL G-FORCE:</span>
+                    <span id="txt-gforce" class="font-semibold text-white">0.02 G</span>
+                </div>
+            </div>
+
+            <!-- Right Side: Diagnostics Log & System Metrics -->
+            <div class="glass-panel p-4 rounded-xl flex flex-col gap-2 w-64 md:w-80 h-36 pointer-events-auto text-[10px] uppercase">
+                <div class="border-b border-cyan-500/20 pb-1 flex justify-between items-center">
+                    <span class="font-bold text-white text-xs">DIAGNOSTICS MONITOR</span>
+                    <div class="flex gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    </div>
+                </div>
+                <div id="log-box" class="h-20 overflow-y-auto custom-scroll flex flex-col gap-1 text-slate-400 font-mono pr-1">
+                    <!-- Logs populated dynamically -->
+                </div>
+            </div>
+        </header>
+
+        <!-- Center Alert Flash -->
+        <div id="alert-banner" class="hidden flex-col items-center justify-center self-center glass-panel-danger px-8 py-4 rounded-xl border-red-500/50 max-w-md text-center transform scale-90 transition-transform duration-300">
+            <h3 class="text-red-500 font-bold text-xl tracking-widest animate-pulse mb-1">!!! VELOCITY LIMIT EXCEEDED !!!</h3>
+            <p class="text-xs text-rose-300">SUPERSONIC SONIC BOOM SUPPRESSORS ACTIVE. WINGS DEPLOYED.</p>
+        </div>
+
+        <!-- Bottom Row: Flight Cockpit Controls & Active Dashboard -->
+        <footer class="flex flex-col lg:flex-row gap-4 items-stretch justify-between w-full pointer-events-auto mt-4">
+            
+            <!-- Bottom Left: Telemetry Gauges -->
+            <div class="glass-panel p-4 rounded-xl flex-1 flex items-center justify-around gap-4 min-w-[280px]">
+                <!-- Speed Display -->
+                <div class="text-center flex-1">
+                    <span class="text-xs text-slate-400 block tracking-widest uppercase">VELOCITY</span>
+                    <div class="flex items-baseline justify-center">
+                        <span id="val-speed" class="text-4xl md:text-5xl font-black text-cyan-400 tracking-tighter">0000</span>
+                        <span class="text-sm font-semibold text-cyan-500 ml-1">km/h</span>
+                    </div>
+                    <!-- Mini visual scale bar -->
+                    <div class="w-full bg-slate-800/80 h-2 mt-2 rounded overflow-hidden p-[1px] border border-slate-700">
+                        <div id="speed-bar" class="bg-gradient-to-r from-cyan-500 to-indigo-500 h-full w-0 transition-all duration-200"></div>
+                    </div>
+                </div>
+                
+                <!-- Separator line -->
+                <div class="w-[1px] self-stretch bg-cyan-500/20"></div>
+
+                <!-- Distance Covered -->
+                <div class="text-center flex-1">
+                    <span class="text-xs text-slate-400 block tracking-widest uppercase">SECTOR TRAJECTORY</span>
+                    <div class="flex items-baseline justify-center">
+                        <span id="val-distance" class="text-4xl md:text-5xl font-black text-white tracking-tighter">0.0</span>
+                        <span class="text-sm font-semibold text-slate-400 ml-1">KM</span>
+                    </div>
+                    <span class="text-[10px] text-emerald-400 block mt-2">TRACK ALIGNMENT: 100%</span>
+                </div>
+            </div>
+
+            <!-- Bottom Center: Control Deck -->
+            <div class="glass-panel p-4 rounded-xl flex-[2] flex flex-col md:flex-row items-stretch justify-between gap-4">
+                
+                <!-- Speed Lever Sliders and Direct Modes -->
+                <div class="flex-1 flex flex-col justify-between">
+                    <div class="flex justify-between items-center text-xs text-cyan-400 mb-2">
+                        <span>PROPULSION THRUST</span>
+                        <span id="lbl-thrust-pct">0%</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <input id="slider-thrust" type="range" min="0" max="100" value="30" class="w-full accent-cyan-400 bg-slate-800/80 h-2 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                    <!-- Quick pre-sets -->
+                    <div class="grid grid-cols-4 gap-1.5 mt-3">
+                        <button id="btn-stop" class="py-1 bg-red-950/40 hover:bg-red-900/60 text-red-400 border border-red-500/30 rounded text-xs transition-colors">ESTOP</button>
+                        <button id="btn-cruise" class="py-1 bg-slate-800/60 hover:bg-slate-700/80 text-white rounded text-xs transition-colors">CRUISE</button>
+                        <button id="btn-warp" class="py-1 bg-indigo-950/60 hover:bg-indigo-900/80 text-indigo-400 border border-indigo-500/30 rounded text-xs transition-colors">WARP</button>
+                        <button id="btn-hyper" class="py-1 bg-cyan-950/60 hover:bg-cyan-900/80 text-cyan-400 border border-cyan-500/30 rounded text-xs transition-colors font-bold tracking-wider animate-pulse">BOOST</button>
+                    </div>
+                </div>
+
+                <!-- Separator line -->
+                <div class="hidden md:block w-[1px] self-stretch bg-cyan-500/20"></div>
+
+                <!-- Aesthetics / Color and Audio Settings -->
+                <div class="flex-1 flex flex-col justify-between text-xs">
+                    <div>
+                        <span class="text-slate-400 block mb-2 tracking-widest uppercase">SYSTEM AESTHETICS</span>
+                        <div class="grid grid-cols-3 gap-1 mb-3">
+                            <button id="btn-scheme-neon" class="py-1 rounded bg-cyan-500/20 border border-cyan-400 text-cyan-300 font-bold">SYNTHWAVE</button>
+                            <button id="btn-scheme-matrix" class="py-1 rounded bg-slate-800/40 border border-slate-700 text-slate-400 hover:border-emerald-500 hover:text-emerald-400 transition-all">EMERALD</button>
+                            <button id="btn-scheme-amber" class="py-1 rounded bg-slate-800/40 border border-slate-700 text-slate-400 hover:border-amber-500 hover:text-amber-400 transition-all">WARM GLOW</button>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center border-t border-slate-800 pt-2">
+                        <span class="text-slate-400">SYSTEM AUDIO FEED:</span>
+                        <button id="btn-audio-toggle" class="px-4 py-1.5 rounded-md font-bold transition-all bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+                            ENGAGED
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Right: Camera Controller -->
+            <div class="glass-panel p-4 rounded-xl flex-1 flex flex-col justify-between min-w-[200px]">
+                <span class="text-xs text-slate-400 block mb-2 tracking-widest uppercase">CAMERA SYSTEM INDEX</span>
+                <div class="grid grid-cols-2 gap-1.5 h-full">
+                    <button id="btn-cam-chase" class="camera-btn py-1.5 bg-cyan-500/20 border border-cyan-400 text-cyan-300 rounded text-xs transition-all font-semibold">CHASE CAM</button>
+                    <button id="btn-cam-cabin" class="camera-btn py-1.5 bg-slate-800/40 border border-slate-700 text-slate-400 hover:border-cyan-500/50 hover:text-cyan-300 rounded text-xs transition-all">COCKPIT</button>
+                    <button id="btn-cam-orbit" class="camera-btn py-1.5 bg-slate-800/40 border border-slate-700 text-slate-400 hover:border-cyan-500/50 hover:text-cyan-300 rounded text-xs transition-all">FREE ORBIT</button>
+                    <button id="btn-cam-side" class="camera-btn py-1.5 bg-slate-800/40 border border-slate-700 text-slate-400 hover:border-cyan-500/50 hover:text-cyan-300 rounded text-xs transition-all">TRACK SIDE</button>
+                </div>
+            </div>
+            
+        </footer>
+    </div>
+
+    <!-- THREE.JS, ORBITCONTROLS & GSAP INJECTED -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <script>
+        // --- System Constants ---
+        const GLOBAL_APP_ID = typeof __app_id !== 'undefined' ? __app_id : 'maglev-v100-sim';
+
+        // --- Aesthetic Color Themes ---
+        const SCHEMES = {
+            synthwave: {
+                neonPrimary: 0x00f3ff, // Cyan
+                neonSecondary: 0xff0055, // Hot Pink
+                ambient: 0x111122,
+                particle: 0x00f3ff,
+                fog: 0x05050b
+            },
+            matrix: {
+                neonPrimary: 0x10b981, // Emerald Green
+                neonSecondary: 0x059669, // Forest Green
+                ambient: 0x05180d,
+                particle: 0x34d399,
+                fog: 0x020a05
+            },
+            warmGlow: {
+                neonPrimary: 0xf59e0b, // Warm Amber
+                neonSecondary: 0xec4899, // Pink
+                ambient: 0x241105,
+                particle: 0xfbbf24,
+                fog: 0x0b0401
+            }
+        };
+
+        let activeScheme = SCHEMES.synthwave;
+
+        // --- Core Application State ---
+        const state = {
+            speed: 400,        // Starting speed in km/h
+            targetSpeed: 650,  // Target speed based on controls
+            maxSpeed: 2800,    // Top possible speed
+            distance: 120.4,   // Simulated distance covered
+            activeCamMode: 'chase', // chase, cabin, orbit, side
+            audioActive: true,
+            isEmergencyStopped: false,
+            wingExtension: 0,  // Dynamic state of train stabilizing wings (0 to 1)
+        };
+
+        // --- Web Audio Synthesizer Class ---
+        class SciFiAudioEngine {
+            constructor() {
+                this.ctx = null;
+                this.engineOsc1 = null;
+                this.engineOsc2 = null;
+                this.engineFilter = null;
+                this.mainGain = null;
+                
+                // Wind friction noise
+                this.windNoiseNode = null;
+                this.windFilter = null;
+                this.windGain = null;
+
+                // Support ring passing pulse/whoosh
+                this.whooshGain = null;
+                this.isInitialized = false;
+            }
+
+            init() {
+                try {
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    this.ctx = new AudioContextClass();
+                    
+                    // Main Output path
+                    this.mainGain = this.ctx.createGain();
+                    this.mainGain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+                    this.mainGain.connect(this.ctx.destination);
+
+                    // Setup Synth Engine Hum
+                    this.engineOsc1 = this.ctx.createOscillator();
+                    this.engineOsc1.type = 'sawtooth';
+                    this.engineOsc1.frequency.setValueAtTime(30, this.ctx.currentTime);
+
+                    this.engineOsc2 = this.ctx.createOscillator();
+                    this.engineOsc2.type = 'triangle';
+                    this.engineOsc2.frequency.setValueAtTime(60, this.ctx.currentTime);
+
+                    this.engineFilter = this.ctx.createBiquadFilter();
+                    this.engineFilter.type = 'lowpass';
+                    this.engineFilter.frequency.setValueAtTime(150, this.ctx.currentTime);
+                    this.engineFilter.Q.setValueAtTime(4, this.ctx.currentTime);
+
+                    const engineGain = this.ctx.createGain();
+                    engineGain.gain.setValueAtTime(0.35, this.ctx.currentTime);
+
+                    // Route engine synths
+                    this.engineOsc1.connect(this.engineFilter);
+                    this.engineOsc2.connect(this.engineFilter);
+                    this.engineFilter.connect(engineGain);
+                    engineGain.connect(this.mainGain);
+
+                    // Generate procedural Wind Friction Hiss via white noise
+                    const bufferSize = 2 * this.ctx.sampleRate;
+                    const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+                    const output = noiseBuffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        output[i] = Math.random() * 2 - 1;
+                    }
+
+                    this.windNoiseNode = this.ctx.createBufferSource();
+                    this.windNoiseNode.buffer = noiseBuffer;
+                    this.windNoiseNode.loop = true;
+
+                    this.windFilter = this.ctx.createBiquadFilter();
+                    this.windFilter.type = 'bandpass';
+                    this.windFilter.frequency.setValueAtTime(400, this.ctx.currentTime);
+                    this.windFilter.Q.setValueAtTime(2, this.ctx.currentTime);
+
+                    this.windGain = this.ctx.createGain();
+                    this.windGain.gain.setValueAtTime(0.02, this.ctx.currentTime);
+
+                    this.windNoiseNode.connect(this.windFilter);
+                    this.windFilter.connect(this.windGain);
+                    this.windGain.connect(this.mainGain);
+
+                    // Dedicated dynamic synth for "whooshing" track rings
+                    this.whooshGain = this.ctx.createGain();
+                    this.whooshGain.gain.setValueAtTime(0, this.ctx.currentTime);
+                    
+                    const whooshOsc = this.ctx.createOscillator();
+                    whooshOsc.type = 'triangle';
+                    whooshOsc.frequency.setValueAtTime(45, this.ctx.currentTime);
+                    
+                    const whooshFilter = this.ctx.createBiquadFilter();
+                    whooshFilter.type = 'lowpass';
+                    whooshFilter.frequency.setValueAtTime(80, this.ctx.currentTime);
+
+                    whooshOsc.connect(whooshFilter);
+                    whooshFilter.connect(this.whooshGain);
+                    this.whooshGain.connect(this.mainGain);
+
+                    // Start all sound engines
+                    this.engineOsc1.start();
+                    this.engineOsc2.start();
+                    this.windNoiseNode.start();
+                    whooshOsc.start();
+
+                    this.isInitialized = true;
+                    this.update(state.speed);
+                } catch(e) {
+                    console.warn("Web Audio API failed to load", e);
+                }
+            }
+
+            setVolume(val) {
+                if (!this.isInitialized) return;
+                gsap.to(this.mainGain.gain, { value: val, duration: 0.4 });
+            }
+
+            triggerWhoosh(intensity) {
+                if (!this.isInitialized || !state.audioActive) return;
+                const now = this.ctx.currentTime;
+                // High speed whoosh trigger
+                this.whooshGain.gain.cancelScheduledValues(now);
+                this.whooshGain.gain.setValueAtTime(0.0, now);
+                this.whooshGain.gain.linearRampToValueAtTime(0.35 * intensity, now + 0.05);
+                this.whooshGain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+            }
+
+            update(currentSpeed) {
+                if (!this.isInitialized || !state.audioActive) return;
+                
+                // Scale values dynamically based on current speeds
+                const pct = currentSpeed / state.maxSpeed; // 0 to 1
+                
+                // Engine Sound pitch & filter
+                const rootFreq = 25 + (pct * 60);
+                this.engineOsc1.frequency.setTargetAtTime(rootFreq, this.ctx.currentTime, 0.1);
+                this.engineOsc2.frequency.setTargetAtTime(rootFreq * 2.02, this.ctx.currentTime, 0.1);
+                
+                const filterCutoff = 100 + (pct * 800);
+                this.engineFilter.frequency.setTargetAtTime(filterCutoff, this.ctx.currentTime, 0.25);
+
+                // Wind sound dynamics
+                const windCutoff = 300 + (pct * 1200);
+                this.windFilter.frequency.setTargetAtTime(windCutoff, this.ctx.currentTime, 0.1);
+                
+                const targetWindVol = 0.01 + (pct * 0.14);
+                this.windGain.gain.setTargetAtTime(targetWindVol, this.ctx.currentTime, 0.2);
+            }
+        }
+        const audio = new SciFiAudioEngine();
+
+        // --- HUD Logging Panel Helper ---
+        const logs = [
+            "SUPERCONDUCTORS COOLING AT -269.1°C",
+            "TUBE VACUUM COMPARTMENT SEALED.",
+            "PROPULSION GRID PRE-ALIGNED STABLE.",
+            "MAGLEV DRIVES ACTIVATED IN MEMORY."
+        ];
+        const logBox = document.getElementById('log-box');
+
+        function addLog(message) {
+            const time = new Date().toLocaleTimeString();
+            logs.push(`[${time}] ${message}`);
+            if (logs.length > 50) logs.shift();
+            
+            logBox.innerHTML = logs.map(l => `<div class="py-0.5 border-b border-white/5 last:border-0">${l}</div>`).join('');
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        // --- THREE.JS SIMULATOR SETUP ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(activeScheme.fog, 0.007);
+
+        // Core Camera setup
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 3, 15);
+
+        // WebGL Renderer
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.3;
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        container.appendChild(renderer.domElement);
+
+        // Interactive Orbit Controls
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.maxPolarAngle = Math.PI / 2 + 0.05; // Lock camera from dipping too far below horizon
+        controls.minDistance = 4;
+        controls.maxDistance = 60;
+        controls.enabled = false; // Enabled only inside orbit camera mode
+
+        // --- SCENE LIGHTS ---
+        const ambientLight = new THREE.AmbientLight(activeScheme.ambient, 1.2);
+        scene.add(ambientLight);
+
+        const primaryLight = new THREE.DirectionalLight(activeScheme.neonPrimary, 2.5);
+        primaryLight.position.set(10, 20, 10);
+        primaryLight.castShadow = true;
+        scene.add(primaryLight);
+
+        const secondaryLight = new THREE.DirectionalLight(activeScheme.neonSecondary, 1.5);
+        secondaryLight.position.set(-15, -5, -15);
+        scene.add(secondaryLight);
+
+        // --- PROCEDURAL CYBERPUNK SKYLINE (Background) ---
+        const cityGroup = new THREE.Group();
+        scene.add(cityGroup);
+
+        const buildingGeometry = new THREE.BoxGeometry(1, 1, 1);
+        const buildingCount = 95;
+        const buildingArray = [];
+
+        for (let i = 0; i < buildingCount; i++) {
+            // High-contrast, shiny metallic material for cyber towers
+            const material = new THREE.MeshStandardMaterial({
+                color: 0x0c0f1d,
+                roughness: 0.15,
+                metalness: 0.9,
+                flatShading: true
+            });
+
+            const buildingMesh = new THREE.Mesh(buildingGeometry, material);
+            
+            // Randomize spatial layout keeping distance from center train tube
+            const xDist = 32 + Math.random() * 85;
+            const xSide = Math.random() > 0.5 ? 1 : -1;
+            const x = xDist * xSide;
+            
+            const height = 40 + Math.random() * 160;
+            const width = 12 + Math.random() * 25;
+            const depth = 12 + Math.random() * 25;
+            
+            buildingMesh.scale.set(width, height, depth);
+            buildingMesh.position.set(x, height / 2 - 25, -Math.random() * 500);
+            
+            // Add luminous bands around tall towers
+            const stripeCount = 2 + Math.floor(Math.random() * 3);
+            for (let j = 0; j < stripeCount; j++) {
+                const ringGeo = new THREE.BoxGeometry(1.02, 0.02, 1.02);
+                const ringMat = new THREE.MeshBasicMaterial({ color: Math.random() > 0.5 ? activeScheme.neonPrimary : activeScheme.neonSecondary });
+                const ring = new THREE.Mesh(ringGeo, ringMat);
+                ring.position.y = 0.1 + (j * 0.2) - (Math.random() * 0.1);
+                buildingMesh.add(ring);
+            }
+
+            cityGroup.add(buildingMesh);
+            buildingArray.push(buildingMesh);
+        }
+
+        // --- TRACK TUBES & RINGS ASSEMBLY (Moving Environment) ---
+        const trackGroup = new THREE.Group();
+        scene.add(trackGroup);
+
+        // Outer Transparent Glass Vacuum Tube
+        const tubeSegmentLength = 600;
+        const tubeRadius = 9;
+        const tubeGeometry = new THREE.CylinderGeometry(tubeRadius, tubeRadius, tubeSegmentLength, 32, 1, true);
+        tubeGeometry.rotateX(Math.PI / 2);
+
+        const glassMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.15,
+            roughness: 0.05,
+            metalness: 0.1,
+            transmission: 0.9, 
+            ior: 1.45,
+            side: THREE.DoubleSide
+        });
+
+        const mainTube = new THREE.Mesh(tubeGeometry, glassMaterial);
+        mainTube.position.z = -100;
+        scene.add(mainTube);
+
+        // Modular Interlocking Structural Support Rings
+        const ringsArray = [];
+        const ringSpacing = 16;
+        const totalRings = 36;
+
+        for (let i = 0; i < totalRings; i++) {
+            const zPos = -(i * ringSpacing) + 30;
+            const ringAssembly = new THREE.Group();
+            ringAssembly.position.z = zPos;
+
+            // Giant structural outer frame
+            const ringGeo = new THREE.TorusGeometry(9.1, 0.35, 12, 32);
+            const ringMat = new THREE.MeshStandardMaterial({ color: 0x1f2430, roughness: 0.3, metalness: 0.9 });
+            const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+            ringAssembly.add(ringMesh);
+
+            // Double Maglev guide rails on bottom
+            const railGeo = new THREE.BoxGeometry(0.3, 0.15, ringSpacing);
+            const railMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.5, metalness: 0.8 });
+            
+            const leftRail = new THREE.Mesh(railGeo, railMat);
+            leftRail.position.set(-1.8, -8.6, 0);
+
+            const rightRail = leftRail.clone();
+            rightRail.position.x = 1.8;
+
+            // Glowing levitation guide lines running down track
+            const lightStripGeo = new THREE.BoxGeometry(0.08, 0.02, ringSpacing);
+            const lightStripMat = new THREE.MeshBasicMaterial({ color: activeScheme.neonPrimary });
+            
+            const leftGlow = new THREE.Mesh(lightStripGeo, lightStripMat);
+            leftGlow.position.set(-1.8, -8.5, 0);
+            
+            const rightGlow = leftGlow.clone();
+            rightGlow.position.x = 1.8;
+
+            ringAssembly.add(leftRail, rightRail, leftGlow, rightGlow);
+
+            // Ring-top diagnostics warning light panel
+            if (i % 3 === 0) {
+                const beaconGeo = new THREE.BoxGeometry(1.5, 0.1, 0.4);
+                const beaconMat = new THREE.MeshBasicMaterial({ color: activeScheme.neonSecondary });
+                const beacon = new THREE.Mesh(beaconGeo, beaconMat);
+                beacon.position.set(0, 8.9, 0);
+                ringAssembly.add(beacon);
+            }
+            
+            trackGroup.add(ringAssembly);
+            ringsArray.push(ringAssembly);
+        }
+
+        // --- HIGH-SPEED VACUUM PARTICLES ---
+        const particleCount = 280;
+        const particleGeometry = new THREE.BufferGeometry();
+        const particlePositions = new Float32Array(particleCount * 3);
+        const particleVelocities = [];
+
+        for (let i = 0; i < particleCount; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const radius = 1.5 + Math.random() * 6.5; // Distribute inside the tube
+            particlePositions[i * 3] = Math.cos(angle) * radius;
+            particlePositions[i * 3 + 1] = Math.sin(angle) * radius - 1; // offset downward slightly
+            particlePositions[i * 3 + 2] = -Math.random() * 450;
+            
+            particleVelocities.push(2.5 + Math.random() * 3.5);
+        }
+
+        particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+        const particleMaterial = new THREE.PointsMaterial({
+            color: activeScheme.particle,
+            size: 0.18,
+            transparent: true,
+            opacity: 0.65,
+            blending: THREE.AdditiveBlending
+        });
+
+        const speedStreakSystem = new THREE.Points(particleGeometry, particleMaterial);
+        scene.add(speedStreakSystem);
+
+        // --- MODELING THE MAGLEV BULLET TRAIN ---
+        // A complex procedural 3-car futuristic vehicle that hovers gracefully
+        const trainGroup = new THREE.Group();
+        trainGroup.position.set(0, -5.2, 0); // Position exactly on the magnetic guide paths
+        scene.add(trainGroup);
+
+        // Common Train Metallic Body Material
+        const trainMetalMat = new THREE.MeshStandardMaterial({
+            color: 0x334155,
+            roughness: 0.1,
+            metalness: 0.85,
+            flatShading: true
+        });
+
+        const glassCockpitMat = new THREE.MeshPhysicalMaterial({
+            color: 0x0f172a,
+            transparent: true,
+            opacity: 0.75,
+            roughness: 0.05,
+            metalness: 0.95,
+            transmission: 0.4
+        });
+
+        // Glowing Engine Core Panel material
+        const emissiveTrainCore = new THREE.MeshBasicMaterial({ color: activeScheme.neonPrimary });
+
+        // Segment 1: Front Locomotive Car
+        const locomotiveGroup = new THREE.Group();
+        locomotiveGroup.position.set(0, 0, -10); // Front
+
+        // Custom sculpted aerodynamic nose
+        const noseGeo = new THREE.BoxGeometry(2.8, 1.8, 8, 4, 4, 10);
+        const posAttr = noseGeo.attributes.position;
+        for (let i = 0; i < posAttr.count; i++) {
+            let z = posAttr.getZ(i);
+            if (z < 0) { // Forward nose half
+                let taperRatio = (4 + z) / 4; 
+                taperRatio = Math.max(0.18, taperRatio); // Ensure nose comes to a sleek point
+                posAttr.setX(i, posAttr.getX(i) * taperRatio);
+                posAttr.setY(i, posAttr.getY(i) * taperRatio * 0.8);
+            }
+        }
+        noseGeo.computeVertexNormals();
+        const mainNose = new THREE.Mesh(noseGeo, trainMetalMat);
+        mainNose.position.z = -1;
+        locomotiveGroup.add(mainNose);
+
+        // Forward cockpit shield window
+        const windowGeo = new THREE.ConeGeometry(1.3, 3, 4);
+        windowGeo.rotateX(Math.PI/2.5);
+        windowGeo.scale(1, 0.45, 1);
+        const mainCockpitWindow = new THREE.Mesh(windowGeo, glassCockpitMat);
+        mainCockpitWindow.position.set(0, 0.55, -2.5);
+        locomotiveGroup.add(mainCockpitWindow);
+
+        // Stabilizing deployable wings (Aero Fins)
+        const leftWingGroup = new THREE.Group();
+        leftWingGroup.position.set(-1.4, -0.3, 1.5);
+        
+        const wingShape = new THREE.BoxGeometry(1.2, 0.08, 2.5);
+        const wingMesh = new THREE.Mesh(wingShape, trainMetalMat);
+        wingMesh.position.x = -0.6; // Anchor offset for realistic rotation hinge
+        leftWingGroup.add(wingMesh);
+
+        const leftWingGlow = new THREE.Mesh(new THREE.BoxGeometry(1.22, 0.02, 2.52), emissiveTrainCore);
+        leftWingGlow.position.set(-0.6, 0.05, 0);
+        leftWingGroup.add(leftWingGlow);
+
+        const rightWingGroup = leftWingGroup.clone();
+        rightWingGroup.position.x = 1.4;
+        rightWingGroup.children[0].position.x = 0.6; // Mirror anchor positions
+        rightWingGroup.children[1].position.x = 0.6;
+
+        locomotiveGroup.add(leftWingGroup, rightWingGroup);
+
+        // Segment 2: Passenger Compartment Pod (Middle Car)
+        const passengerGroup = new THREE.Group();
+        passengerGroup.position.set(0, 0, 0); // Middle
+
+        const bodyMiddle = new THREE.Mesh(new THREE.CylinderGeometry(1.4, 1.4, 11, 8), trainMetalMat);
+        bodyMiddle.rotateX(Math.PI / 2);
+        passengerGroup.add(bodyMiddle);
+
+        // Passenger window strip
+        const pWindowsL = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.25, 9.5), emissiveTrainCore);
+        pWindowsL.position.set(-1.38, 0.35, 0);
+        const pWindowsR = pWindowsL.clone();
+        pWindowsR.position.x = 1.38;
+        passengerGroup.add(pWindowsL, pWindowsR);
+
+        // Segment 3: Power reactor & Thruster Exhaust Car (Rear Car)
+        const rearGroup = new THREE.Group();
+        rearGroup.position.set(0, 0, 10); // Rear
+
+        const bodyRear = new THREE.Mesh(new THREE.CylinderGeometry(1.4, 1.1, 8, 8), trainMetalMat);
+        bodyRear.rotateX(Math.PI / 2);
+        rearGroup.add(bodyRear);
+
+        // Supercharged thruster ring
+        const thrusterRing = new THREE.Mesh(new THREE.TorusGeometry(0.85, 0.18, 12, 24), new THREE.MeshBasicMaterial({ color: activeScheme.neonSecondary }));
+        thrusterRing.position.z = 4.15;
+        rearGroup.add(thrusterRing);
+
+        // Exhaust wake particles (Dynamic Trail)
+        const engineTrailCount = 40;
+        const trailGeometry = new THREE.BufferGeometry();
+        const trailPositions = new Float32Array(engineTrailCount * 3);
+        const trailVelocities = [];
+
+        for (let i = 0; i < engineTrailCount; i++) {
+            trailPositions[i * 3] = (Math.random() - 0.5) * 0.8;
+            trailPositions[i * 3 + 1] = (Math.random() - 0.5) * 0.8;
+            trailPositions[i * 3 + 2] = 4.5 + Math.random() * 12;
+            trailVelocities.push(1.5 + Math.random() * 2);
+        }
+        
+        trailGeometry.setAttribute('position', new THREE.BufferAttribute(trailPositions, 3));
+        const trailMaterial = new THREE.PointsMaterial({
+            color: activeScheme.neonSecondary,
+            size: 0.25,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending
+        });
+
+        const engineTrail = new THREE.Points(trailGeometry, trailMaterial);
+        rearGroup.add(engineTrail);
+
+        // Assemble All Cars inside primary Train Group
+        trainGroup.add(locomotiveGroup, passengerGroup, rearGroup);
+
+        // Under-hull Magnetic Induction levitation plates (Glow)
+        const magPlates = new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.1, 30), new THREE.MeshBasicMaterial({
+            color: activeScheme.neonPrimary,
+            transparent: true,
+            opacity: 0.35
+        }));
+        magPlates.position.y = -1.1;
+        trainGroup.add(magPlates);
+
+        // Headlight Spotlights pointing down vacuum track
+        const leftHeadlight = new THREE.SpotLight(activeScheme.neonPrimary, 8, 80, Math.PI / 5, 0.5, 1);
+        leftHeadlight.position.set(-0.8, 0, -14);
+        leftHeadlight.target.position.set(-0.8, -3, -50);
+        trainGroup.add(leftHeadlight);
+        trainGroup.add(leftHeadlight.target);
+
+        const rightHeadlight = leftHeadlight.clone();
+        rightHeadlight.position.x = 0.8;
+        rightHeadlight.target.position.x = 0.8;
+        trainGroup.add(rightHeadlight);
+        trainGroup.add(rightHeadlight.target);
+
+
+        // --- DYNAMIC CONTROL INTERFACE INTERACTIONS ---
+
+        // UI Element Selectors
+        const uiModal = document.getElementById('audio-modal');
+        const uiHud = document.getElementById('hud');
+        const sliderThrust = document.getElementById('slider-thrust');
+        const lblThrustPct = document.getElementById('lbl-thrust-pct');
+        const valSpeed = document.getElementById('val-speed');
+        const valDistance = document.getElementById('val-distance');
+        const speedBar = document.getElementById('speed-bar');
+
+        const btnStop = document.getElementById('btn-stop');
+        const btnCruise = document.getElementById('btn-cruise');
+        const btnWarp = document.getElementById('btn-warp');
+        const btnHyper = document.getElementById('btn-hyper');
+
+        const btnSchemeNeon = document.getElementById('btn-scheme-neon');
+        const btnSchemeMatrix = document.getElementById('btn-scheme-matrix');
+        const btnSchemeAmber = document.getElementById('btn-scheme-amber');
+
+        const btnAudioToggle = document.getElementById('btn-audio-toggle');
+        const alertBanner = document.getElementById('alert-banner');
+
+        // Initializer Button action
+        document.getElementById('btn-init').addEventListener('click', () => {
+            audio.init();
+            gsap.to(uiModal, { opacity: 0, duration: 0.5, onComplete: () => {
+                uiModal.style.display = 'none';
+                uiHud.classList.remove('opacity-0');
+                
+                // Set up and run default camera mode transition
+                setCameraMode('chase');
+                addLog("HYPERLOOP SYSTEMS ENGAGED.");
+                addLog("DIAGNOSTICS CLEAR. REACTOR AT CRITICAL LEVEL.");
+            }});
+        });
+
+        // Speed Sliders Updates
+        sliderThrust.addEventListener('input', (e) => {
+            const thrust = parseInt(e.target.value);
+            lblThrustPct.textContent = `${thrust}%`;
+            state.targetSpeed = Math.floor((thrust / 100) * state.maxSpeed);
+            state.isEmergencyStopped = false;
+        });
+
+        // Quick Preset Speed Command Keys
+        btnStop.addEventListener('click', () => {
+            sliderThrust.value = 0;
+            lblThrustPct.textContent = '0%';
+            state.targetSpeed = 0;
+            state.isEmergencyStopped = true;
+            addLog("ESTOP INITIATED! ENGAGING ENTIRE MAGNETIC PARKING DRAG.");
+        });
+
+        btnCruise.addEventListener('click', () => {
+            sliderThrust.value = 35;
+            lblThrustPct.textContent = '35%';
+            state.targetSpeed = 950;
+            state.isEmergencyStopped = false;
+            addLog("AUTO-CRUISE ENGAGED. EN ROUTE PROTOCOL ACTIVE.");
+        });
+
+        btnWarp.addEventListener('click', () => {
+            sliderThrust.value = 65;
+            lblThrustPct.textContent = '65%';
+            state.targetSpeed = 1800;
+            state.isEmergencyStopped = false;
+            addLog("HIGH LEVEL GRID LINE INGESTION ACTIVE.");
+        });
+
+        btnHyper.addEventListener('click', () => {
+            sliderThrust.value = 100;
+            lblThrustPct.textContent = '100%';
+            state.targetSpeed = 2800;
+            state.isEmergencyStopped = false;
+            addLog("MAX POWER LIMIT RETRIEVED. REACTOR AT 115% LOAD!");
+        });
+
+        // Audio System Toggle
+        btnAudioToggle.addEventListener('click', () => {
+            state.audioActive = !state.audioActive;
+            if (state.audioActive) {
+                audio.setVolume(0.2);
+                btnAudioToggle.textContent = "ENGAGED";
+                btnAudioToggle.className = "px-4 py-1.5 rounded-md font-bold transition-all bg-emerald-500/10 border border-emerald-500/30 text-emerald-400";
+                addLog("CABIN AUDIO SPECTRUM UNMUTED.");
+            } else {
+                audio.setVolume(0.0);
+                btnAudioToggle.textContent = "MUTED";
+                btnAudioToggle.className = "px-4 py-1.5 rounded-md font-bold transition-all bg-red-500/10 border border-red-500/30 text-red-400";
+                addLog("CABIN AUDIO SPECTRUM SILENCED.");
+            }
+        });
+
+        // Palette Themes Updates
+        function applyScheme(scheme, activeBtn, otherBtns) {
+            activeScheme = scheme;
+            
+            // Re-bind colors for ambient & directional lamps
+            ambientLight.color.setHex(activeScheme.ambient);
+            primaryLight.color.setHex(activeScheme.neonPrimary);
+            secondaryLight.color.setHex(activeScheme.neonSecondary);
+            scene.fog.color.setHex(activeScheme.fog);
+            renderer.setClearColor(activeScheme.fog);
+
+            // Dynamically sweep engine trails & magplate colors
+            trailMaterial.color.setHex(activeScheme.neonSecondary);
+            thrusterRing.material.color.setHex(activeScheme.neonSecondary);
+            magPlates.material.color.setHex(activeScheme.neonPrimary);
+            emissiveTrainCore.color.setHex(activeScheme.neonPrimary);
+            particleMaterial.color.setHex(activeScheme.particle);
+
+            // Re-color procedural skyline highlights
+            buildingArray.forEach(b => {
+                b.children.forEach((stripe, idx) => {
+                    stripe.material.color.setHex(idx % 2 === 0 ? activeScheme.neonPrimary : activeScheme.neonSecondary);
+                });
+            });
+
+            // Adjust neon tracking lines down inside support track rings
+            ringsArray.forEach(segment => {
+                // Glow rails are objects at positions index 3 and 4
+                segment.children[3].material.color.setHex(activeScheme.neonPrimary);
+                segment.children[4].material.color.setHex(activeScheme.neonPrimary);
+                if (segment.children[5]) { // overhead beacon light
+                    segment.children[5].material.color.setHex(activeScheme.neonSecondary);
+                }
+            });
+
+            // Re-style selected states on Buttons
+            activeBtn.className = "py-1 rounded bg-cyan-500/20 border border-cyan-400 text-cyan-300 font-bold";
+            otherBtns.forEach(btn => {
+                btn.className = "py-1 rounded bg-slate-800/40 border border-slate-700 text-slate-400 hover:border-cyan-500/50 hover:text-cyan-300 transition-all";
+            });
+        }
+
+        btnSchemeNeon.addEventListener('click', () => {
+            applyScheme(SCHEMES.synthwave, btnSchemeNeon, [btnSchemeMatrix, btnSchemeAmber]);
+            addLog("AESTHETICS SET TO SYNTHWAVE CYBER-NEON.");
+        });
+
+        btnSchemeMatrix.addEventListener('click', () => {
+            applyScheme(SCHEMES.matrix, btnSchemeMatrix, [btnSchemeNeon, btnSchemeAmber]);
+            addLog("AESTHETICS SET TO TERMINAL EMERALD.");
+        });
+
+        btnSchemeAmber.addEventListener('click', () => {
+            applyScheme(SCHEMES.warmGlow, btnSchemeAmber, [btnSchemeNeon, btnSchemeMatrix]);
+            addLog("AESTHETICS SET TO DUSTY AMBER GLOW.");
+        });
+
+
+        // --- CAMERA CONTROLLER MATRIX ---
+        const cameraButtons = {
+            chase: document.getElementById('btn-cam-chase'),
+            cabin: document.getElementById('btn-cam-cabin'),
+            orbit: document.getElementById('btn-cam-orbit'),
+            side: document.getElementById('btn-cam-side')
+        };
+
+        function setCameraMode(mode) {
+            state.activeCamMode = mode;
+            
+            // Standardize button CSS states
+            Object.keys(cameraButtons).forEach(key => {
+                if (key === mode) {
+                    cameraButtons[key].className = "camera-btn py-1.5 bg-cyan-500/20 border border-cyan-400 text-cyan-300 rounded text-xs transition-all font-semibold";
+                } else {
+                    cameraButtons[key].className = "camera-btn py-1.5 bg-slate-800/40 border border-slate-700 text-slate-400 hover:border-cyan-500/50 hover:text-cyan-300 rounded text-xs transition-all";
+                }
+            });
+
+            // Disable standard Orbit controls unless explicitly active
+            controls.enabled = (mode === 'orbit');
+
+            // Reset camera parameters & initialize transitions with GSAP
+            if (mode === 'chase') {
+                gsap.to(camera.position, { x: 0, y: 1.2, z: 12, duration: 1.5, ease: 'power2.inOut' });
+            } else if (mode === 'cabin') {
+                // Placed right inside the sleek windshield looking out down tracks
+                gsap.to(camera.position, { x: 0, y: -4.4, z: -12.4, duration: 1.5, ease: 'power2.inOut' });
+            } else if (mode === 'side') {
+                // Place static camera slightly to the side to capture fly-bys
+                gsap.to(camera.position, { x: -8, y: -2, z: -25, duration: 1.5, ease: 'power2.inOut' });
+            }
+            
+            addLog(`CAMERA VIEW MATRIX ROUTED: ${mode.toUpperCase()}`);
+        }
+
+        // Attach listeners to Camera Index selector buttons
+        Object.keys(cameraButtons).forEach(key => {
+            cameraButtons[key].addEventListener('click', () => setCameraMode(key));
+        });
+
+
+        // --- DYNAMIC RENDERING LOOP & SYSTEM PHYSICS ---
+        const clock = new THREE.Clock();
+        let ringDistanceAccumulator = 0;
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const dt = clock.getDelta();
+            const time = clock.getElapsedTime();
+
+            // 1. Interpolate current Speed toward requested Target Speed smoothly
+            const accelSpeed = state.isEmergencyStopped ? 520 : 250; // Extra strong decelerations under E-brake
+            if (state.speed < state.targetSpeed) {
+                state.speed += accelSpeed * dt;
+                if (state.speed > state.targetSpeed) state.speed = state.targetSpeed;
+            } else if (state.speed > state.targetSpeed) {
+                state.speed -= accelSpeed * dt;
+                if (state.speed < state.targetSpeed) state.speed = state.targetSpeed;
+            }
+
+            // 2. Animate Aero Stabilization Wings based on actual speed
+            const speedRatio = state.speed / state.maxSpeed;
+            if (speedRatio > 0.65) {
+                // Automatically flare stabilizing wings outward at warp speeds
+                state.wingExtension = THREE.MathUtils.lerp(state.wingExtension, 1.0, 4 * dt);
+                alertBanner.classList.remove('hidden');
+                alertBanner.classList.add('flex');
+            } else {
+                state.wingExtension = THREE.MathUtils.lerp(state.wingExtension, 0.0, 4 * dt);
+                alertBanner.classList.remove('flex');
+                alertBanner.classList.add('hidden');
+            }
+
+            // Apply extensions dynamically to wing object rotations
+            leftWingGroup.rotation.y = state.wingExtension * (Math.PI / 6);
+            rightWingGroup.rotation.y = -state.wingExtension * (Math.PI / 6);
+
+            // 3. Keep simulated Distance ticking
+            if (state.speed > 0) {
+                state.distance += (state.speed / 3600) * dt;
+                valDistance.textContent = state.distance.toFixed(2);
+            }
+
+            // Update Audio parameters
+            audio.update(state.speed);
+
+            // Update Speedometer UI
+            valSpeed.textContent = Math.floor(state.speed).toString().padStart(4, '0');
+            speedBar.style.width = `${(state.speed / state.maxSpeed) * 100}%`;
+
+            // Adjust numerical system dashboard telemetry readings based on speeds
+            document.getElementById('txt-status').textContent = state.speed === 0 ? "STATIONARY" : (speedRatio > 0.75 ? "WARP SPEED ACTIVE" : "STABLE CRUISE");
+            document.getElementById('txt-status').className = state.speed === 0 ? "font-semibold text-rose-500 animate-pulse" : (speedRatio > 0.75 ? "font-semibold text-rose-500 glow-red animate-pulse" : "font-semibold text-cyan-300");
+            document.getElementById('txt-power').textContent = `${(1.2 + (speedRatio * 5.4)).toFixed(1)} MW`;
+            document.getElementById('txt-levitation').textContent = `${(12 + ((1 - speedRatio) * 13)).toFixed(1)} mm`;
+            document.getElementById('txt-gforce').textContent = `${(0.01 + (speedRatio * 0.15)).toFixed(2)} G`;
+
+            // 4. THE SPEED ILLUSION MECHANIC
+            // To prevent track limitations, the Train stays centered while track items scroll backwards
+            const scrollingSpeed = (state.speed * 0.28) * dt; // Convert speed to local 3D scroll units
+            
+            // Scroll track structural rings
+            ringsArray.forEach(segment => {
+                segment.position.z += scrollingSpeed;
+
+                // If segment has passed the camera view, loop it seamlessly to the front of tube
+                if (segment.position.z > 25) {
+                    segment.position.z = -(totalRings * ringSpacing) + 25 + (segment.position.z % 25);
+                    
+                    // Trigger contextual whoosh audio each time we reset past the front/cabin zone
+                    if (state.speed > 100) {
+                        audio.triggerWhoosh(speedRatio);
+                    }
+                }
+            });
+
+            // Scroll procedural metropolis background towers slightly slower to simulate parallex
+            buildingArray.forEach(building => {
+                building.position.z += scrollingSpeed * 0.7;
+                if (building.position.z > 80) {
+                    building.position.z = -420 - (Math.random() * 80);
+                    building.position.x = (32 + Math.random() * 85) * (Math.random() > 0.5 ? 1 : -1);
+                }
+            });
+
+            // Update high-speed vacuum particle streaks
+            const posArray = speedStreakSystem.geometry.attributes.position.array;
+            for (let i = 0; i < particleCount; i++) {
+                // Particles accelerate even faster relative to the engine
+                posArray[i * 3 + 2] += scrollingSpeed * particleVelocities[i];
+
+                if (posArray[i * 3 + 2] > 20) {
+                    posArray[i * 3 + 2] = -400 - (Math.random() * 50);
+                }
+            }
+            speedStreakSystem.geometry.attributes.position.needsUpdate = true;
+
+            // Animate dynamic exhaust core trail particles spitting from thruster
+            const trailPositionsArray = engineTrail.geometry.attributes.position.array;
+            for (let i = 0; i < engineTrailCount; i++) {
+                // Particles drift backwards along Z axis
+                trailPositionsArray[i * 3 + 2] += (5 + (speedRatio * 15)) * dt * trailVelocities[i];
+                // Reset exhaust when out of sight
+                if (trailPositionsArray[i * 3 + 2] > 25) {
+                    trailPositionsArray[i * 3] = (Math.random() - 0.5) * 0.8;
+                    trailPositionsArray[i * 3 + 1] = (Math.random() - 0.5) * 0.8;
+                    trailPositionsArray[i * 3 + 2] = 4.5 + Math.random() * 5;
+                }
+            }
+            engineTrail.geometry.attributes.position.needsUpdate = true;
+
+            // 5. TRAIN LEVITATION PHYSICS VIBRATIONS
+            if (state.speed > 0) {
+                // Train hovers and vibrates proportional to velocity
+                const vibrationIntensity = 0.01 + (speedRatio * 0.045);
+                trainGroup.position.y = -5.2 + Math.sin(time * 18) * vibrationIntensity * 0.5;
+                trainGroup.position.x = Math.sin(time * 12) * vibrationIntensity * 0.3;
+            } else {
+                // Smooth settle to resting grid placement when stopped
+                trainGroup.position.y = THREE.MathUtils.lerp(trainGroup.position.y, -5.2, 5 * dt);
+                trainGroup.position.x = THREE.MathUtils.lerp(trainGroup.position.x, 0, 5 * dt);
+            }
+
+            // 6. CAMERA SYSTEM BEHAVIOR CONTROLS
+            if (state.activeCamMode === 'chase') {
+                // Smooth follow lag with dynamic screen velocity shake
+                const shake = (Math.random() - 0.5) * (speedRatio * 0.035);
+                camera.position.x = THREE.MathUtils.lerp(camera.position.x, trainGroup.position.x + shake, 5 * dt);
+                camera.position.y = THREE.MathUtils.lerp(camera.position.y, trainGroup.position.y + 2.4 + shake, 5 * dt);
+                camera.position.z = THREE.MathUtils.lerp(camera.position.z, trainGroup.position.z + 12.5, 4 * dt);
+                camera.lookAt(0, -4.5, -15);
+            } else if (state.activeCamMode === 'cabin') {
+                // In cabin looking forward, add high speed cabin vibration shake
+                const cabinShakeX = (Math.random() - 0.5) * (speedRatio * 0.022);
+                const cabinShakeY = (Math.random() - 0.5) * (speedRatio * 0.022);
+                camera.position.set(
+                    trainGroup.position.x + cabinShakeX,
+                    trainGroup.position.y + 0.72 + cabinShakeY,
+                    -11.8
+                );
+                camera.lookAt(0, -4.2, -60);
+            } else if (state.activeCamMode === 'side') {
+                // Static camera that watches the train fly past, then automatically pans to track it
+                camera.lookAt(trainGroup.position);
+                
+                // If train has traveled beyond the side camera view, transition it back
+                if (trainGroup.position.z < -40) {
+                    camera.position.z = 25; // Reset camera perspective slightly further back
+                }
+            } else if (state.activeCamMode === 'orbit') {
+                controls.update();
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // --- MOBILE INCLINE & DRAG SUPPORT FOR CAMERA SWIPE ---
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+
+        window.addEventListener('mousedown', () => isDragging = true);
+        window.addEventListener('mouseup', () => isDragging = false);
+        window.addEventListener('mousemove', (e) => {
+            if (isDragging && state.activeCamMode === 'orbit') {
+                const deltaMove = {
+                    x: e.offsetX - previousMousePosition.x,
+                    y: e.offsetY - previousMousePosition.y
+                };
+                // Manual backup rotations if orbits control fails
+            }
+            previousMousePosition = {
+                x: e.offsetX,
+                y: e.offsetY
+            };
+        });
+
+        // --- RESPONSIVE SCREEN RESIZE MECHANICS ---
+        window.addEventListener('resize', onWindowResize, false);
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        // Start core visualization rendering sequence
+        animate();
+    </script>
+</body>
+</html>

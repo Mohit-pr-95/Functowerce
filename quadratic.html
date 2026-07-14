@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>y = x² (Quadratic Function) - Functowerce</title>
+    <meta name="description" content="Explore the quadratic function y = x²: its history, mathematical properties, uses, and real-life applications.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- App Wrapper -->
+    <div class="site-wrapper">
+        
+        <!-- Top Navigation / Header -->
+        <header class="content-top">
+            <div class="left-section">
+                <!-- Menu Button -->
+                <button class="menu-btn" id="btn-menu" aria-label="Toggle Menu">
+                    <span class="line"></span>
+                    <span class="line"></span>
+                    <span class="line"></span>
+                </button>
+                
+                <!-- Logo & Subtitle Group -->
+                <div class="logo-group">
+                    <h1 class="logo-title"><a href="index.html" class="logo-link">Functowerce</a></h1>
+                    <p class="logo-tagline">Only place you needed to learn mathematical functions in very comprehensive way</p>
+                </div>
+            </div>
+            
+            <!-- Profile Button -->
+            <button class="profile-btn" id="btn-profile" aria-label="User Profile">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Sub-Header / Tagline -->
+        <section class="magic-bar">
+            <p class="magic-text"><strong>y = x²</strong> - The Quadratic Function & Parabola</p>
+        </section>
+
+        <!-- Main Body Grid -->
+        <main class="main-body">
+            
+            <!-- Left Side: Textbook Content -->
+            <article class="content-section">
+                <div class="academic-text">
+                    <h2>Introduction to y = x²</h2>
+                    <p>
+                        The function <strong>y = x²</strong>, also written as <code>f(x) = x²</code>, is the parent quadratic function. It takes every input number <em>x</em> and returns its square. Because a positive number squared and a negative number squared both produce a non-negative result, the graph never goes below the x-axis.<span class="citation" data-citation="1">[1]</span>
+                    </p>
+                    <p>
+                        Visually, <code>y = x²</code> forms a smooth U-shaped curve called a <strong>parabola</strong>. Its lowest point is the <strong>vertex</strong> at <code>(0, 0)</code>, and the y-axis is its line of symmetry. This simple function is the base model for every quadratic expression of the form <code>y = ax² + bx + c</code>.
+                    </p>
+                    
+                    <h3>Origin and Historical Context</h3>
+                    <p>
+                        The idea of squaring numbers is ancient. Babylonian mathematicians used tables of squares thousands of years ago to support arithmetic, measurement, and early equation solving. Geometry also gave quadratic thinking a natural home: finding the area of a square requires multiplying a side length by itself, so <code>area = x²</code>.
+                    </p>
+                    <p>
+                        The curved shape connected to <code>x²</code> was studied in classical Greek geometry as a parabola, especially through work on conic sections. In the 17th century, coordinate geometry connected algebra and curves, making it natural to draw equations such as <code>y = x²</code> on an x-y plane.
+                    </p>
+
+                    <!-- LaTeX Style Formula -->
+                    <div class="math-block" aria-label="Formula for squaring function and its derivative">
+                        {\displaystyle f(x)=x^{2},\quad f(-x)=f(x),\quad f'(x)=2x}
+                    </div>
+
+                    <h3>Core Properties</h3>
+                    <p>
+                        The domain of <code>y = x²</code> is all real numbers, because any real input can be squared. The range is <code>y ≥ 0</code>, because squares cannot be negative in the real-number system. The function is <strong>even</strong>, meaning <code>f(-x) = f(x)</code>; for example, <code>(-4)² = 16</code> and <code>4² = 16</code>.
+                    </p>
+                    <p>
+                        The slope changes as x changes. Near the vertex the curve is flat, while farther from the origin it becomes steeper. In calculus, this changing slope is described by the derivative <code>f'(x) = 2x</code>.
+                    </p>
+
+                    <h3>Worked Examples</h3>
+                    <p>
+                        If <code>x = 5</code>, then <code>y = 5² = 25</code>. If <code>x = -5</code>, then <code>y = (-5)² = 25</code>. This pair of equal outputs shows the symmetry of the parabola.
+                    </p>
+                    <p>
+                        A small table of values helps reveal the shape:
+                    </p>
+                    <div class="value-strip" aria-label="Sample values for y equals x squared">
+                        <span>x: -3</span>
+                        <span>-2</span>
+                        <span>-1</span>
+                        <span>0</span>
+                        <span>1</span>
+                        <span>2</span>
+                        <span>3</span>
+                        <strong>y: 9, 4, 1, 0, 1, 4, 9</strong>
+                    </div>
+
+                    <h3>Scientific and Engineering Uses</h3>
+                    <p>
+                        Quadratic functions appear in <strong>uniformly accelerated motion</strong>. For example, the distance traveled by an object under constant acceleration often contains a squared time term, such as <code>d = ½gt²</code>. This is why falling objects and projectiles are commonly modeled using quadratic equations.<span class="citation" data-citation="2">[2]</span>
+                    </p>
+                    <p>
+                        Engineers use parabolas in reflectors because a parabolic shape can focus parallel incoming rays toward one point. This principle appears in satellite dishes, radio antennas, solar cookers, telescopes, microphones, and headlights.
+                    </p>
+
+                    <h3>Real-Life Uses</h3>
+                    <p>
+                        <strong>Area:</strong> The simplest real-life meaning of <code>x²</code> is square area. If a square has side length <code>x</code>, its area is <code>x²</code>. Doubling the side length does not double the area; it makes the area four times as large.
+                    </p>
+                    <p>
+                        <strong>Sports and fountains:</strong> The path of a basketball shot, a thrown ball, or a water stream is often approximated by a parabola when air resistance is ignored.
+                    </p>
+                    <p>
+                        <strong>Design and construction:</strong> Parabolic arches and bridge cable models use quadratic shapes because they distribute load and create stable, predictable curves.<span class="citation" data-citation="3">[3]</span>
+                    </p>
+                    <p>
+                        <strong>Optimization:</strong> Quadratic models help find maximum profit, minimum cost, best dimensions, and efficient designs. Since a parabola has a clear turning point, it is useful when a problem has one best maximum or minimum value.
+                    </p>
+
+                    <h3>How Transformations Work</h3>
+                    <p>
+                        The parent function <code>y = x²</code> can be moved, stretched, compressed, or flipped. In <code>y = a(x - h)² + k</code>, the point <code>(h, k)</code> becomes the vertex. If <code>a</code> is positive, the parabola opens upward; if <code>a</code> is negative, it opens downward.
+                    </p>
+
+                    <div class="back-nav">
+                        <a href="index.html" class="back-btn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>
+                            Back to Introduction
+                        </a>
+                    </div>
+
+                    <div class="source-attribution">
+                        Source: <a href="https://en.wikipedia.org/wiki/Quadratic_function" target="_blank" rel="noopener">Wikipedia</a>
+                    </div>
+                </div>
+
+                <!-- Footnotes section -->
+                <footer class="footnotes-area">
+                    <div class="footnote-item" id="fn-1">
+                        <span class="fn-num">[1]</span>
+                        <p class="fn-desc">For every real number x, the square x² is non-negative, so the graph stays on or above the x-axis.</p>
+                    </div>
+                    <div class="footnote-item" id="fn-2">
+                        <span class="fn-num">[2]</span>
+                        <p class="fn-desc">With constant acceleration, position formulas commonly include a t² term, which is why parabolic models appear in motion problems.</p>
+                    </div>
+                    <div class="footnote-item" id="fn-3">
+                        <span class="fn-num">[3]</span>
+                        <p class="fn-desc">Parabolic shapes appear in architecture, bridge modeling, reflector design, and other contexts where a smooth symmetric curve is useful.</p>
+                    </div>
+                </footer>
+            </article>
+
+            <!-- Right Side: Properties & Area Visualizer -->
+            <section class="interactive-playground">
+                
+                <!-- Tab Controls -->
+                <div class="tab-controls">
+                    <button class="tab-btn active" data-tab="properties">Key Properties</button>
+                    <button class="tab-btn" data-tab="visualizer">Geometric Visualizer</button>
+                </div>
+
+                <!-- Tab 1: Key Properties -->
+                <div class="tab-content active" id="tab-properties">
+                    <div class="properties-container">
+                        <table class="properties-table">
+                            <tbody>
+                                <tr>
+                                    <td class="prop-name">Function Formula</td>
+                                    <td class="prop-val">f(x) = x²</td>
+                                </tr>
+                                <tr>
+                                    <td class="prop-name">Curve Geometry</td>
+                                    <td class="prop-val">Parabola (opens up)</td>
+                                </tr>
+                                <tr>
+                                    <td class="prop-name">Vertex Point</td>
+                                    <td class="prop-val">(0, 0)</td>
+                                </tr>
+                                <tr>
+                                    <td class="prop-name">Axis of Symmetry</td>
+                                    <td class="prop-val">x = 0 (y-axis)</td>
+                                </tr>
+                                <tr>
+                                    <td class="prop-name">Domain</td>
+                                    <td class="prop-val">(-∞, +∞)</td>
+                                </tr>
+                                <tr>
+                                    <td class="prop-name">Range</td>
+                                    <td class="prop-val">[0, +∞)</td>
+                                </tr>
+                                <tr>
+                                    <td class="prop-name">Parity (Symmetry)</td>
+                                    <td class="prop-val">Even: f(-x) = f(x)</td>
+                                </tr>
+                                <tr>
+                                    <td class="prop-name">Derivative (Slope)</td>
+                                    <td class="prop-val">f'(x) = 2x</td>
+                                </tr>
+                                <tr>
+                                    <td class="prop-name">Antiderivative</td>
+                                    <td class="prop-val">∫ x² dx = x³/3 + C</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="interactive-note">
+                        This table lists the mathematical properties of the squaring function.
+                    </div>
+                </div>
+
+                <!-- Tab 2: Geometric Visualizer -->
+                <div class="tab-content" id="tab-visualizer">
+                    <div class="visualizer-card">
+                        <div class="area-display">
+                            Side (x) = <span id="side-val">3.0</span> &nbsp;|&nbsp; Area (x²) = <span id="area-val">9.00</span>
+                        </div>
+                        
+                        <div class="canvas-wrapper">
+                            <canvas id="square-canvas" width="300" height="220"></canvas>
+                        </div>
+
+                        <div class="slider-controls visualizer-controls">
+                            <div class="slider-row">
+                                <label for="x-slider">Side Length (x): <span id="slider-label">3.0</span></label>
+                                <input type="range" id="x-slider" min="0.5" max="5" step="0.1" value="3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="interactive-note">
+                        Drag the slider to see how the area of a square (<strong>x²</strong>) grows geometrically as its side length (<strong>x</strong>) changes.
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Function Calculator Section -->
+            <section class="content-section">
+                <div class="calculator-header">
+                    <span class="calc-badge">Calculator</span>
+                    <h2 class="calc-title">Function Calculator</h2>
+                    <p class="calc-desc">Enter a value of x to compute the corresponding output y from the backend.</p>
+                </div>
+                
+                <div class="calculator-grid">
+                    <!-- Input Section -->
+                    <div class="calc-panel input-panel">
+                        <label for="calc-x-input" class="calc-panel-label">Input (<span class="math-var">x</span>)</label>
+                        <div class="input-field-wrapper">
+                            <input type="number" id="calc-x-input" class="calc-field calc-input" placeholder="Enter x value..." step="any">
+                            <span class="field-symbol">x</span>
+                        </div>
+                        <button id="calc-btn" class="calc-btn">
+                            <span>Calculate</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                        <span class="calc-panel-hint">Press Enter or click Calculate</span>
+                    </div>
+
+                    <!-- Visual Divider / Flow Arrow -->
+                    <div class="calc-flow">
+                        <div class="flow-line"></div>
+                        <div class="flow-badge">
+                            <span class="flow-formula"></span>
+                            <svg class="flow-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-line"></div>
+                    </div>
+
+                    <!-- Output Section -->
+                    <div class="calc-panel output-panel">
+                        <label class="calc-panel-label">Output (<span class="math-var">y</span>)</label>
+                        <div class="output-field-wrapper">
+                            <div id="calc-y-output" class="calc-field calc-output waiting">
+                                <span class="output-placeholder">Awaiting input...</span>
+                            </div>
+                            <span class="field-symbol">y</span>
+                        </div>
+                        <span class="calc-panel-hint">Value computed by the backend</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Sidebar Navigation Drawer -->
+        <aside class="sidebar-drawer" id="sidebar-drawer">
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item">Introduction</a>
+                <a href="quadratic.html" class="nav-item active">Quadratic Function (y=x²)</a>
+                <a href="index.html#function-selection" class="nav-item">Common Functions</a>
+                <a href="#" class="nav-item">Types of Functions</a>
+                <a href="#" class="nav-item">Domain & Codomain</a>
+                <a href="#" class="nav-item">Inverse Functions</a>
+            </nav>
+        </aside>
+        
+        <!-- Profile Dropdown Modal -->
+        <div class="profile-modal" id="profile-modal">
+            <div class="profile-header">
+                <h3>Welcome Scholar</h3>
+                <p>Track your mathematical progress</p>
+            </div>
+            <ul class="profile-links">
+                <li><a href="#">My Dashboard</a></li>
+                <li><a href="#">Bookmarks</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- Main Navigation Script -->
+    <script src="script.js"></script>
+    
+    <!-- Local Interactive Visualizer Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Local Tab Swapping
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetTab = btn.getAttribute('data-tab');
+                    
+                    tabButtons.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    btn.classList.add('active');
+                    const targetContent = document.getElementById(`tab-${targetTab}`);
+                    if (targetContent) {
+                        targetContent.classList.add('active');
+                        if (targetTab === 'visualizer') {
+                            setTimeout(drawSquare, 20);
+                        }
+                    }
+                });
+            });
+
+            // Canvas Area Visualizer
+            const canvas = document.getElementById('square-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const slider = document.getElementById('x-slider');
+            const sideVal = document.getElementById('side-val');
+            const areaVal = document.getElementById('area-val');
+            const sliderLabel = document.getElementById('slider-label');
+
+            function drawSquare() {
+                const x = parseFloat(slider.value);
+                const area = x * x;
+
+                // Update text values
+                sideVal.textContent = x.toFixed(1);
+                areaVal.textContent = area.toFixed(2);
+                sliderLabel.textContent = x.toFixed(1);
+
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Draw background grid lines
+                ctx.strokeStyle = 'rgba(0, 139, 139, 0.05)';
+                ctx.lineWidth = 1;
+                const gridSpacing = 20;
+                for (let i = 0; i < canvas.width; i += gridSpacing) {
+                    ctx.beginPath();
+                    ctx.moveTo(i, 0);
+                    ctx.lineTo(i, canvas.height);
+                    ctx.stroke();
+                }
+                for (let j = 0; j < canvas.height; j += gridSpacing) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, j);
+                    ctx.lineTo(canvas.width, j);
+                    ctx.stroke();
+                }
+
+                // Draw centering references
+                const cx = canvas.width / 2;
+                const cy = canvas.height / 2;
+
+                // Calculate square pixel size (scale factor: 30 pixels per unit)
+                const scale = 30;
+                const pixelSize = x * scale;
+
+                // Draw square filled with light semi-transparent cyan
+                ctx.fillStyle = 'rgba(0, 139, 139, 0.15)';
+                ctx.fillRect(cx - pixelSize / 2, cy - pixelSize / 2, pixelSize, pixelSize);
+
+                // Draw square borders
+                ctx.strokeStyle = '#008b8b';
+                ctx.lineWidth = 2.5;
+                ctx.strokeRect(cx - pixelSize / 2, cy - pixelSize / 2, pixelSize, pixelSize);
+
+                // Draw dotted indicators and text for sides
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([3, 3]);
+
+                // Draw dimension lines
+                // Top dimension line
+                ctx.beginPath();
+                ctx.moveTo(cx - pixelSize / 2, cy - pixelSize / 2 - 10);
+                ctx.lineTo(cx + pixelSize / 2, cy - pixelSize / 2 - 10);
+                ctx.stroke();
+
+                // Left dimension line
+                ctx.beginPath();
+                ctx.moveTo(cx - pixelSize / 2 - 10, cy - pixelSize / 2);
+                ctx.lineTo(cx - pixelSize / 2 - 10, cy + pixelSize / 2);
+                ctx.stroke();
+
+                ctx.setLineDash([]); // Reset dashed lines
+
+                // Draw side text label "x"
+                ctx.fillStyle = '#000000';
+                ctx.font = 'bold 12px var(--font-sans)';
+                ctx.textAlign = 'center';
+                // Top label
+                ctx.fillText(`x = ${x.toFixed(1)}`, cx, cy - pixelSize / 2 - 16);
+                // Left label
+                ctx.save();
+                ctx.translate(cx - pixelSize / 2 - 18, cy);
+                ctx.rotate(-Math.PI / 2);
+                ctx.fillText(`x = ${x.toFixed(1)}`, 0, 0);
+                ctx.restore();
+
+                // Draw area label "x²" in the center of the square
+                ctx.fillStyle = '#008b8b';
+                ctx.font = 'bold 14px var(--font-sans)';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(`x² = ${area.toFixed(2)}`, cx, cy);
+            }
+
+            // Bind slider to drawing function
+            slider.addEventListener('input', drawSquare);
+
+            // Draw initially
+            drawSquare();
+
+            // --- Function Calculator Connection ---
+            const calcInput = document.getElementById('calc-x-input');
+            const calcOutput = document.getElementById('calc-y-output');
+            const calcBtn = document.getElementById('calc-btn');
+
+            if (calcInput && calcOutput) {
+                // Clear output if input is completely emptied
+                calcInput.addEventListener('input', () => {
+                    if (calcInput.value.trim() === '') {
+                        calcOutput.classList.add('waiting');
+                        calcOutput.innerHTML = '<span class="output-placeholder">Awaiting input...</span>';
+                    }
+                });
+
+                // Function to perform the backend calculation call
+                function performCalculation() {
+                    const value = calcInput.value.trim();
+                    if (value === '') {
+                        calcOutput.classList.add('waiting');
+                        calcOutput.innerHTML = '<span class="output-placeholder">Please enter a value first.</span>';
+                        return;
+                    }
+
+                    // Dynamically resolve backend host (handle local file:// schema vs served pages on other ports)
+                    const baseUrl = window.location.port === '5000' ? '' : 'http://127.0.0.1:5000';
+                    
+                    calcOutput.innerHTML = '<span class="output-placeholder">Calculating...</span>';
+
+                    fetch(`${baseUrl}/calculate?n=${encodeURIComponent(value)}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                return response.json().then(err => { throw new Error(err.error || 'Server error') });
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data && data.result !== undefined) {
+                                calcOutput.classList.remove('waiting');
+                                const result = Number(data.result);
+                                // Format floating numbers beautifully, integers normally
+                                calcOutput.textContent = Number.isInteger(result) ? result : result.toFixed(4);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error connecting to backend:', error);
+                            calcOutput.classList.add('waiting');
+                            calcOutput.innerHTML = `<span class="output-placeholder" style="color: #ff6b6b;">Offline / Error</span>`;
+                        });
+                }
+
+                // Trigger on button click
+                if (calcBtn) {
+                    calcBtn.addEventListener('click', performCalculation);
+                }
+
+                // Trigger on pressing Enter inside input
+                calcInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        performCalculation();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
