@@ -10,7 +10,7 @@ A full-stack educational platform designed to demystify mathematical functions t
 
 ---
 
-## 🎯 Features
+##  Features
 
 ### 📚 Educational Content
 - **Comprehensive Function Theory**: Detailed explanations of mathematical function concepts
@@ -343,7 +343,7 @@ cot(theta)             # cotangent
 
 ---
 
-## 🛠️ Development Guide
+##  Development Guide
 
 ### Adding a New Function
 
@@ -423,7 +423,7 @@ taskkill /PID <PID> /F
 
 ---
 
-## 📋 Requirements
+##  Requirements
 
 **Frontend:**
 - Modern browser with ES6 support
@@ -442,7 +442,7 @@ pip install -r requirements.txt
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions are welcome! Here's how to help:
 
@@ -476,15 +476,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 👨‍💻 Author
+## Author
 
-**Mohit Pandey**
+**Mohit Singh**
 - GitHub: [@Mohit-pr-95](https://github.com/Mohit-pr-95)
 - Project: [Functowerce](https://github.com/Mohit-pr-95/Functowerce)
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Mathematical content sourced from Wikipedia and academic references
 - Flask framework for backend development
@@ -494,14 +494,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 📞 Support & Contact
+## Support & Contact
 
 For questions, suggestions, or bug reports:
 - 🐛 [Report an Issue](https://github.com/Mohit-pr-95/Functowerce/issues)
 - 💬 [Start a Discussion](https://github.com/Mohit-pr-95/Functowerce/discussions)
 - 📧 Check the repository for contact information
 
----
 
 ## 🗺️ Roadmap
 
