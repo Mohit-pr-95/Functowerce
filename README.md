@@ -31,9 +31,9 @@ A full-stack educational platform designed to demystify mathematical functions t
 
 ### 🗂️ Function Library
 - **Quadratic Function**: f(x) = x² (Fully implemented with calculator)
-- **Greatest Integer Function**: f(x) = [x] (Coming soon)
-- **Fractional Part Function**: f(x) = {x} (Coming soon)
-- **Trigonometric Functions**: Sine, Cosine, and more (Coming soon)
+- **Greatest Integer Function**: f(x) = [x] (Mapped to custom 404 Page Not Found)
+- **Fractional Part Function**: f(x) = {x} (Mapped to custom 404 Page Not Found)
+- **Trigonometric Functions**: Sine, Cosine, and more (Mapped to custom 404 Page Not Found)
 
 ---
 
