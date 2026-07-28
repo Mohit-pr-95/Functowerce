@@ -10,6 +10,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Playfair+Display:ital,wght@0,700;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Signika:wght@600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script>
+        (function() {
+            var t = localStorage.getItem('functowerce-theme') || 'light';
+            if (t === 'system') {
+                t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
 </head>
 <body>
 
@@ -26,25 +35,67 @@
                     <span class="line"></span>
                 </button>
                 
+                <!-- Language Selection Dropdown -->
+                <div class="lang-select-wrapper">
+                    <select id="lang-select" class="lang-select" aria-label="Select Language">
+                        <option value="en">🇬🇧 English</option>
+                        <option value="hi">🇮🇳 हिन्दी</option>
+                    </select>
+                </div>
+
                 <!-- Logo & Subtitle Group -->
                 <div class="logo-group">
                     <h1 class="logo-title"><a href="index.html" class="logo-link">Functowerce</a></h1>
-                    <p class="logo-tagline">Only place you needed to learn mathematical functions in very comprehensive way</p>
+                    <p class="logo-tagline" data-i18n="header_tagline">Only place you needed to learn mathematical functions in very comprehensive way</p>
                 </div>
             </div>
             
-            <!-- Profile Button -->
-            <button class="profile-btn" id="btn-profile" aria-label="User Profile">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                    <circle cx="12" cy="7" r="4"/>
-                </svg>
-            </button>
+            <div class="right-section">
+                <!-- Theme Switcher Tabs -->
+                <div class="theme-switcher-tabs" id="theme-switcher" role="radiogroup" aria-label="Theme selection">
+                    <button type="button" class="theme-tab-btn active" data-theme-val="light" role="radio" aria-checked="true" aria-label="Light theme">
+                        <svg class="theme-tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <span class="theme-tab-label" data-i18n="theme_light">Light</span>
+                    </button>
+                    <button type="button" class="theme-tab-btn" data-theme-val="dark" role="radio" aria-checked="false" aria-label="Dark theme">
+                        <svg class="theme-tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                        <span class="theme-tab-label" data-i18n="theme_dark">Dark</span>
+                    </button>
+                    <button type="button" class="theme-tab-btn" data-theme-val="system" role="radio" aria-checked="false" aria-label="System theme">
+                        <svg class="theme-tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                        <span class="theme-tab-label" data-i18n="theme_system">System</span>
+                    </button>
+                </div>
+
+                <!-- Profile Button -->
+                <button class="profile-btn" id="btn-profile" aria-label="User Profile">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </button>
+            </div>
         </header>
 
         <!-- Sub-Header / Tagline -->
         <section class="magic-bar">
-            <p class="magic-text"><strong>Functions</strong> - Magic of mathematics</p>
+            <p class="magic-text" data-i18n="magic_bar"><strong>Functions</strong> - Magic of mathematics</p>
         </section>
 
         <!-- Main 404 Body -->
@@ -61,14 +112,14 @@
                 </div>
 
                 <!-- Text Headings -->
-                <h1 class="not-found-title">Boo! Page missing!</h1>
-                <p class="not-found-desc">Whoops! This page must be a ghost - it's not here!</p>
+                <h1 class="not-found-title" data-i18n="n404_title">Boo! Page missing!</h1>
+                <p class="not-found-desc" data-i18n="n404_desc">Whoops! This page must be a ghost - it's not here!</p>
 
                 <!-- Action Button -->
                 <div class="flow-button-container">
                     <a href="index.html" class="flow-btn">
                         <span class="flow-btn-bg"></span>
-                        <span class="flow-btn-text">Find shelter</span>
+                        <span class="flow-btn-text" data-i18n="n404_btn">Find shelter</span>
                         <svg class="flow-btn-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
@@ -78,7 +129,7 @@
 
                 <!-- 404 Explanation Trigger -->
                 <div class="explanation-link-wrapper">
-                    <button type="button" class="what-means-btn" id="open-404-modal">
+                    <button type="button" class="what-means-btn" id="open-404-modal" data-i18n="n404_link">
                         What means 404?
                     </button>
                 </div>
@@ -88,25 +139,25 @@
         <!-- Sidebar Navigation Drawer -->
         <aside class="sidebar-drawer" id="sidebar-drawer">
             <nav class="sidebar-nav">
-                <a href="index.html" class="nav-item">Introduction</a>
-                <a href="quadratic.html" class="nav-item">Quadratic Function (y=x²)</a>
-                <a href="index.html#function-selection" class="nav-item">Common Functions</a>
-                <a href="404.html" class="nav-item">Types of Functions</a>
-                <a href="404.html" class="nav-item">Domain & Codomain</a>
-                <a href="404.html" class="nav-item">Inverse Functions</a>
+                <a href="index.html" class="nav-item" data-i18n="nav_intro">Introduction</a>
+                <a href="quadratic.html" class="nav-item" data-i18n="nav_quadratic">Quadratic Function (y=x²)</a>
+                <a href="index.html#function-selection" class="nav-item" data-i18n="nav_common">Common Functions</a>
+                <a href="404.html" class="nav-item" data-i18n="nav_types">Types of Functions</a>
+                <a href="404.html" class="nav-item" data-i18n="nav_domain">Domain & Codomain</a>
+                <a href="404.html" class="nav-item" data-i18n="nav_inverse">Inverse Functions</a>
             </nav>
         </aside>
         
         <!-- Profile Dropdown Modal -->
         <div class="profile-modal" id="profile-modal">
             <div class="profile-header">
-                <h3>Welcome Scholar</h3>
-                <p>Track your mathematical progress</p>
+                <h3 data-i18n="profile_welcome">Welcome Scholar</h3>
+                <p data-i18n="profile_sub">Track your mathematical progress</p>
             </div>
             <ul class="profile-links">
-                <li><a href="404.html">My Dashboard</a></li>
-                <li><a href="404.html">Bookmarks</a></li>
-                <li><a href="404.html">Settings</a></li>
+                <li><a href="404.html" data-i18n="profile_dashboard">My Dashboard</a></li>
+                <li><a href="404.html" data-i18n="profile_bookmarks">Bookmarks</a></li>
+                <li><a href="404.html" data-i18n="profile_settings">Settings</a></li>
             </ul>
         </div>
 
@@ -116,14 +167,14 @@
                 <button class="modal-close-btn" id="close-404-modal" aria-label="Close modal">&times;</button>
                 <div class="info-modal-header">
                     <span class="info-code-badge">HTTP 404</span>
-                    <h2>What does 404 mean?</h2>
+                    <h2 data-i18n="n404_modal_title">What does 404 mean?</h2>
                 </div>
                 <div class="info-modal-body">
-                    <p>In computer networking, an <strong>HTTP 404 Not Found</strong> error is a standard status code indicating that the client was able to communicate with a given server, but the server could not find what was requested.</p>
-                    <p>In the context of <strong>Functowerce</strong>, this mathematical function or section has not been published yet or is currently wandering in the phantom realm of non-existent coordinates!</p>
+                    <p data-i18n="n404_modal_p1">In computer networking, an <strong>HTTP 404 Not Found</strong> error is a standard status code indicating that the client was able to communicate with a given server, but the server could not find what was requested.</p>
+                    <p data-i18n="n404_modal_p2">In the context of <strong>Functowerce</strong>, this mathematical function or section has not been published yet or is currently wandering in the phantom realm of non-existent coordinates!</p>
                 </div>
                 <div class="info-modal-footer">
-                    <button class="modal-ok-btn" id="ok-404-modal">Got it!</button>
+                    <button class="modal-ok-btn" id="ok-404-modal" data-i18n="n404_modal_ok">Got it!</button>
                 </div>
             </div>
         </div>

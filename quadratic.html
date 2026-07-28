@@ -10,6 +10,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script>
+        (function() {
+            var t = localStorage.getItem('functowerce-theme') || 'light';
+            if (t === 'system') {
+                t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
 </head>
 <body>
 
@@ -26,25 +35,67 @@
                     <span class="line"></span>
                 </button>
                 
+                <!-- Language Selection Dropdown -->
+                <div class="lang-select-wrapper">
+                    <select id="lang-select" class="lang-select" aria-label="Select Language">
+                        <option value="en">🇬🇧 English</option>
+                        <option value="hi">🇮🇳 हिन्दी</option>
+                    </select>
+                </div>
+
                 <!-- Logo & Subtitle Group -->
                 <div class="logo-group">
                     <h1 class="logo-title"><a href="index.html" class="logo-link">Functowerce</a></h1>
-                    <p class="logo-tagline">Only place you needed to learn mathematical functions in very comprehensive way</p>
+                    <p class="logo-tagline" data-i18n="header_tagline">Only place you needed to learn mathematical functions in very comprehensive way</p>
                 </div>
             </div>
             
-            <!-- Profile Button -->
-            <button class="profile-btn" id="btn-profile" aria-label="User Profile">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                    <circle cx="12" cy="7" r="4"/>
-                </svg>
-            </button>
+            <div class="right-section">
+                <!-- Theme Switcher Tabs -->
+                <div class="theme-switcher-tabs" id="theme-switcher" role="radiogroup" aria-label="Theme selection">
+                    <button type="button" class="theme-tab-btn active" data-theme-val="light" role="radio" aria-checked="true" aria-label="Light theme">
+                        <svg class="theme-tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <span class="theme-tab-label" data-i18n="theme_light">Light</span>
+                    </button>
+                    <button type="button" class="theme-tab-btn" data-theme-val="dark" role="radio" aria-checked="false" aria-label="Dark theme">
+                        <svg class="theme-tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                        <span class="theme-tab-label" data-i18n="theme_dark">Dark</span>
+                    </button>
+                    <button type="button" class="theme-tab-btn" data-theme-val="system" role="radio" aria-checked="false" aria-label="System theme">
+                        <svg class="theme-tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                        <span class="theme-tab-label" data-i18n="theme_system">System</span>
+                    </button>
+                </div>
+
+                <!-- Profile Button -->
+                <button class="profile-btn" id="btn-profile" aria-label="User Profile">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </button>
+            </div>
         </header>
 
         <!-- Sub-Header / Tagline -->
         <section class="magic-bar">
-            <p class="magic-text"><strong>y = x²</strong> - The Quadratic Function & Parabola</p>
+            <p class="magic-text" data-i18n="magic_bar_quadratic"><strong>y = x²</strong> - The Quadratic Function & Parabola</p>
         </section>
 
         <!-- Main Body Grid -->
@@ -53,19 +104,19 @@
             <!-- Left Side: Textbook Content -->
             <article class="content-section">
                 <div class="academic-text">
-                    <h2>Introduction to y = x²</h2>
-                    <p>
+                    <h2 data-i18n="quad_intro_h2">Introduction to y = x²</h2>
+                    <p data-i18n="quad_intro_p1">
                         The function <strong>y = x²</strong>, also written as <code>f(x) = x²</code>, is the parent quadratic function. It takes every input number <em>x</em> and returns its square. Because a positive number squared and a negative number squared both produce a non-negative result, the graph never goes below the x-axis.<span class="citation" data-citation="1">[1]</span>
                     </p>
-                    <p>
+                    <p data-i18n="quad_intro_p2">
                         Visually, <code>y = x²</code> forms a smooth U-shaped curve called a <strong>parabola</strong>. Its lowest point is the <strong>vertex</strong> at <code>(0, 0)</code>, and the y-axis is its line of symmetry. This simple function is the base model for every quadratic expression of the form <code>y = ax² + bx + c</code>.
                     </p>
                     
-                    <h3>Origin and Historical Context</h3>
-                    <p>
+                    <h3 data-i18n="quad_origin_h3">Origin and Historical Context</h3>
+                    <p data-i18n="quad_origin_p1">
                         The idea of squaring numbers is ancient. Babylonian mathematicians used tables of squares thousands of years ago to support arithmetic, measurement, and early equation solving. Geometry also gave quadratic thinking a natural home: finding the area of a square requires multiplying a side length by itself, so <code>area = x²</code>.
                     </p>
-                    <p>
+                    <p data-i18n="quad_origin_p2">
                         The curved shape connected to <code>x²</code> was studied in classical Greek geometry as a parabola, especially through work on conic sections. In the 17th century, coordinate geometry connected algebra and curves, making it natural to draw equations such as <code>y = x²</code> on an x-y plane.
                     </p>
 
@@ -74,19 +125,19 @@
                         {\displaystyle f(x)=x^{2},\quad f(-x)=f(x),\quad f'(x)=2x}
                     </div>
 
-                    <h3>Core Properties</h3>
-                    <p>
+                    <h3 data-i18n="quad_props_h3">Core Properties</h3>
+                    <p data-i18n="quad_props_p1">
                         The domain of <code>y = x²</code> is all real numbers, because any real input can be squared. The range is <code>y ≥ 0</code>, because squares cannot be negative in the real-number system. The function is <strong>even</strong>, meaning <code>f(-x) = f(x)</code>; for example, <code>(-4)² = 16</code> and <code>4² = 16</code>.
                     </p>
-                    <p>
+                    <p data-i18n="quad_props_p2">
                         The slope changes as x changes. Near the vertex the curve is flat, while farther from the origin it becomes steeper. In calculus, this changing slope is described by the derivative <code>f'(x) = 2x</code>.
                     </p>
 
-                    <h3>Worked Examples</h3>
-                    <p>
+                    <h3 data-i18n="quad_examples_h3">Worked Examples</h3>
+                    <p data-i18n="quad_examples_p1">
                         If <code>x = 5</code>, then <code>y = 5² = 25</code>. If <code>x = -5</code>, then <code>y = (-5)² = 25</code>. This pair of equal outputs shows the symmetry of the parabola.
                     </p>
-                    <p>
+                    <p data-i18n="quad_examples_p2">
                         A small table of values helps reveal the shape:
                     </p>
                     <div class="value-strip" aria-label="Sample values for y equals x squared">
@@ -100,30 +151,30 @@
                         <strong>y: 9, 4, 1, 0, 1, 4, 9</strong>
                     </div>
 
-                    <h3>Scientific and Engineering Uses</h3>
-                    <p>
+                    <h3 data-i18n="quad_sci_h3">Scientific and Engineering Uses</h3>
+                    <p data-i18n="quad_sci_p1">
                         Quadratic functions appear in <strong>uniformly accelerated motion</strong>. For example, the distance traveled by an object under constant acceleration often contains a squared time term, such as <code>d = ½gt²</code>. This is why falling objects and projectiles are commonly modeled using quadratic equations.<span class="citation" data-citation="2">[2]</span>
                     </p>
-                    <p>
+                    <p data-i18n="quad_sci_p2">
                         Engineers use parabolas in reflectors because a parabolic shape can focus parallel incoming rays toward one point. This principle appears in satellite dishes, radio antennas, solar cookers, telescopes, microphones, and headlights.
                     </p>
 
-                    <h3>Real-Life Uses</h3>
-                    <p>
+                    <h3 data-i18n="quad_real_h3">Real-Life Uses</h3>
+                    <p data-i18n="quad_real_p1">
                         <strong>Area:</strong> The simplest real-life meaning of <code>x²</code> is square area. If a square has side length <code>x</code>, its area is <code>x²</code>. Doubling the side length does not double the area; it makes the area four times as large.
                     </p>
-                    <p>
+                    <p data-i18n="quad_real_p2">
                         <strong>Sports and fountains:</strong> The path of a basketball shot, a thrown ball, or a water stream is often approximated by a parabola when air resistance is ignored.
                     </p>
-                    <p>
+                    <p data-i18n="quad_real_p3">
                         <strong>Design and construction:</strong> Parabolic arches and bridge cable models use quadratic shapes because they distribute load and create stable, predictable curves.<span class="citation" data-citation="3">[3]</span>
                     </p>
-                    <p>
+                    <p data-i18n="quad_real_p4">
                         <strong>Optimization:</strong> Quadratic models help find maximum profit, minimum cost, best dimensions, and efficient designs. Since a parabola has a clear turning point, it is useful when a problem has one best maximum or minimum value.
                     </p>
 
-                    <h3>How Transformations Work</h3>
-                    <p>
+                    <h3 data-i18n="quad_trans_h3">How Transformations Work</h3>
+                    <p data-i18n="quad_trans_p1">
                         The parent function <code>y = x²</code> can be moved, stretched, compressed, or flipped. In <code>y = a(x - h)² + k</code>, the point <code>(h, k)</code> becomes the vertex. If <code>a</code> is positive, the parabola opens upward; if <code>a</code> is negative, it opens downward.
                     </p>
 
@@ -133,7 +184,7 @@
                                 <line x1="19" y1="12" x2="5" y2="12"></line>
                                 <polyline points="12 19 5 12 12 5"></polyline>
                             </svg>
-                            Back to Introduction
+                            <span data-i18n="back_to_intro">Back to Introduction</span>
                         </a>
                     </div>
 
@@ -164,8 +215,8 @@
                 
                 <!-- Tab Controls -->
                 <div class="tab-controls">
-                    <button class="tab-btn active" data-tab="properties">Key Properties</button>
-                    <button class="tab-btn" data-tab="visualizer">Geometric Visualizer</button>
+                    <button class="tab-btn active" data-tab="properties" data-i18n="tab_properties">Key Properties</button>
+                    <button class="tab-btn" data-tab="visualizer" data-i18n="tab_visualizer">Geometric Visualizer</button>
                 </div>
 
                 <!-- Tab 1: Key Properties -->
@@ -174,45 +225,45 @@
                         <table class="properties-table">
                             <tbody>
                                 <tr>
-                                    <td class="prop-name">Function Formula</td>
+                                    <td class="prop-name" data-i18n="prop_formula">Function Formula</td>
                                     <td class="prop-val">f(x) = x²</td>
                                 </tr>
                                 <tr>
-                                    <td class="prop-name">Curve Geometry</td>
-                                    <td class="prop-val">Parabola (opens up)</td>
+                                    <td class="prop-name" data-i18n="prop_geometry">Curve Geometry</td>
+                                    <td class="prop-val" data-i18n="prop_geometry_val">Parabola (opens up)</td>
                                 </tr>
                                 <tr>
-                                    <td class="prop-name">Vertex Point</td>
+                                    <td class="prop-name" data-i18n="prop_vertex">Vertex Point</td>
                                     <td class="prop-val">(0, 0)</td>
                                 </tr>
                                 <tr>
-                                    <td class="prop-name">Axis of Symmetry</td>
+                                    <td class="prop-name" data-i18n="prop_axis">Axis of Symmetry</td>
                                     <td class="prop-val">x = 0 (y-axis)</td>
                                 </tr>
                                 <tr>
-                                    <td class="prop-name">Domain</td>
+                                    <td class="prop-name" data-i18n="prop_domain">Domain</td>
                                     <td class="prop-val">(-∞, +∞)</td>
                                 </tr>
                                 <tr>
-                                    <td class="prop-name">Range</td>
+                                    <td class="prop-name" data-i18n="prop_range">Range</td>
                                     <td class="prop-val">[0, +∞)</td>
                                 </tr>
                                 <tr>
-                                    <td class="prop-name">Parity (Symmetry)</td>
-                                    <td class="prop-val">Even: f(-x) = f(x)</td>
+                                    <td class="prop-name" data-i18n="prop_parity">Parity (Symmetry)</td>
+                                    <td class="prop-val" data-i18n="prop_parity_val">Even: f(-x) = f(x)</td>
                                 </tr>
                                 <tr>
-                                    <td class="prop-name">Derivative (Slope)</td>
+                                    <td class="prop-name" data-i18n="prop_derivative">Derivative (Slope)</td>
                                     <td class="prop-val">f'(x) = 2x</td>
                                 </tr>
                                 <tr>
-                                    <td class="prop-name">Antiderivative</td>
+                                    <td class="prop-name" data-i18n="prop_antiderivative">Antiderivative</td>
                                     <td class="prop-val">∫ x² dx = x³/3 + C</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div class="interactive-note">
+                    <div class="interactive-note" data-i18n="prop_note">
                         This table lists the mathematical properties of the squaring function.
                     </div>
                 </div>
@@ -230,12 +281,12 @@
 
                         <div class="slider-controls visualizer-controls">
                             <div class="slider-row">
-                                <label for="x-slider">Side Length (x): <span id="slider-label">3.0</span></label>
+                                <label for="x-slider"><span data-i18n="side_len">Side Length (x):</span> <span id="slider-label">3.0</span></label>
                                 <input type="range" id="x-slider" min="0.5" max="5" step="0.1" value="3">
                             </div>
                         </div>
                     </div>
-                    <div class="interactive-note">
+                    <div class="interactive-note" data-i18n="visualizer_note">
                         Drag the slider to see how the area of a square (<strong>x²</strong>) grows geometrically as its side length (<strong>x</strong>) changes.
                     </div>
                 </div>
@@ -245,27 +296,27 @@
             <!-- Function Calculator Section -->
             <section class="content-section">
                 <div class="calculator-header">
-                    <span class="calc-badge">Calculator</span>
-                    <h2 class="calc-title">Function Calculator</h2>
-                    <p class="calc-desc">Enter a value of x to compute the corresponding output y from the backend.</p>
+                    <span class="calc-badge" data-i18n="calc_badge">Calculator</span>
+                    <h2 class="calc-title" data-i18n="calc_title">Function Calculator</h2>
+                    <p class="calc-desc" data-i18n="calc_desc">Enter a value of x to compute the corresponding output y from the backend.</p>
                 </div>
                 
                 <div class="calculator-grid">
                     <!-- Input Section -->
                     <div class="calc-panel input-panel">
-                        <label for="calc-x-input" class="calc-panel-label">Input (<span class="math-var">x</span>)</label>
+                        <label for="calc-x-input" class="calc-panel-label" data-i18n="calc_input_label">Input (<span class="math-var">x</span>)</label>
                         <div class="input-field-wrapper">
-                            <input type="number" id="calc-x-input" class="calc-field calc-input" placeholder="Enter x value..." step="any">
+                            <input type="number" id="calc-x-input" class="calc-field calc-input" placeholder="Enter x value..." data-i18n-ph="calc_input_ph" step="any">
                             <span class="field-symbol">x</span>
                         </div>
                         <button id="calc-btn" class="calc-btn">
-                            <span>Calculate</span>
+                            <span data-i18n="calc_btn_text">Calculate</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                                 <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
                         </button>
-                        <span class="calc-panel-hint">Press Enter or click Calculate</span>
+                        <span class="calc-panel-hint" data-i18n="calc_hint_input">Press Enter or click Calculate</span>
                     </div>
 
                     <!-- Visual Divider / Flow Arrow -->
@@ -283,14 +334,14 @@
 
                     <!-- Output Section -->
                     <div class="calc-panel output-panel">
-                        <label class="calc-panel-label">Output (<span class="math-var">y</span>)</label>
+                        <label class="calc-panel-label" data-i18n="calc_output_label">Output (<span class="math-var">y</span>)</label>
                         <div class="output-field-wrapper">
                             <div id="calc-y-output" class="calc-field calc-output waiting">
-                                <span class="output-placeholder">Awaiting input...</span>
+                                <span class="output-placeholder" data-i18n="calc_awaiting">Awaiting input...</span>
                             </div>
                             <span class="field-symbol">y</span>
                         </div>
-                        <span class="calc-panel-hint">Value computed by the backend</span>
+                        <span class="calc-panel-hint" data-i18n="calc_hint_output">Value computed by the backend</span>
                     </div>
                 </div>
             </section>
@@ -299,25 +350,25 @@
         <!-- Sidebar Navigation Drawer -->
         <aside class="sidebar-drawer" id="sidebar-drawer">
             <nav class="sidebar-nav">
-                <a href="index.html" class="nav-item">Introduction</a>
-                <a href="quadratic.html" class="nav-item active">Quadratic Function (y=x²)</a>
-                <a href="index.html#function-selection" class="nav-item">Common Functions</a>
-                <a href="404.html" class="nav-item">Types of Functions</a>
-                <a href="404.html" class="nav-item">Domain & Codomain</a>
-                <a href="404.html" class="nav-item">Inverse Functions</a>
+                <a href="index.html" class="nav-item" data-i18n="nav_intro">Introduction</a>
+                <a href="quadratic.html" class="nav-item active" data-i18n="nav_quadratic">Quadratic Function (y=x²)</a>
+                <a href="index.html#function-selection" class="nav-item" data-i18n="nav_common">Common Functions</a>
+                <a href="404.html" class="nav-item" data-i18n="nav_types">Types of Functions</a>
+                <a href="404.html" class="nav-item" data-i18n="nav_domain">Domain & Codomain</a>
+                <a href="404.html" class="nav-item" data-i18n="nav_inverse">Inverse Functions</a>
             </nav>
         </aside>
         
         <!-- Profile Dropdown Modal -->
         <div class="profile-modal" id="profile-modal">
             <div class="profile-header">
-                <h3>Welcome Scholar</h3>
-                <p>Track your mathematical progress</p>
+                <h3 data-i18n="profile_welcome">Welcome Scholar</h3>
+                <p data-i18n="profile_sub">Track your mathematical progress</p>
             </div>
             <ul class="profile-links">
-                <li><a href="404.html">My Dashboard</a></li>
-                <li><a href="404.html">Bookmarks</a></li>
-                <li><a href="404.html">Settings</a></li>
+                <li><a href="404.html" data-i18n="profile_dashboard">My Dashboard</a></li>
+                <li><a href="404.html" data-i18n="profile_bookmarks">Bookmarks</a></li>
+                <li><a href="404.html" data-i18n="profile_settings">Settings</a></li>
             </ul>
         </div>
 
@@ -361,6 +412,7 @@
             const sliderLabel = document.getElementById('slider-label');
 
             function drawSquare() {
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
                 const x = parseFloat(slider.value);
                 const area = x * x;
 
@@ -373,7 +425,7 @@
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
                 // Draw background grid lines
-                ctx.strokeStyle = 'rgba(0, 139, 139, 0.05)';
+                ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 139, 139, 0.05)';
                 ctx.lineWidth = 1;
                 const gridSpacing = 20;
                 for (let i = 0; i < canvas.width; i += gridSpacing) {
@@ -398,16 +450,16 @@
                 const pixelSize = x * scale;
 
                 // Draw square filled with light semi-transparent cyan
-                ctx.fillStyle = 'rgba(0, 139, 139, 0.15)';
+                ctx.fillStyle = isDark ? 'rgba(20, 184, 166, 0.25)' : 'rgba(0, 139, 139, 0.15)';
                 ctx.fillRect(cx - pixelSize / 2, cy - pixelSize / 2, pixelSize, pixelSize);
 
                 // Draw square borders
-                ctx.strokeStyle = '#008b8b';
+                ctx.strokeStyle = isDark ? '#14b8a6' : '#008b8b';
                 ctx.lineWidth = 2.5;
                 ctx.strokeRect(cx - pixelSize / 2, cy - pixelSize / 2, pixelSize, pixelSize);
 
                 // Draw dotted indicators and text for sides
-                ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+                ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)';
                 ctx.lineWidth = 1;
                 ctx.setLineDash([3, 3]);
 
@@ -427,7 +479,7 @@
                 ctx.setLineDash([]); // Reset dashed lines
 
                 // Draw side text label "x"
-                ctx.fillStyle = '#000000';
+                ctx.fillStyle = isDark ? '#f8fafc' : '#000000';
                 ctx.font = 'bold 12px var(--font-sans)';
                 ctx.textAlign = 'center';
                 // Top label
@@ -440,7 +492,7 @@
                 ctx.restore();
 
                 // Draw area label "x²" in the center of the square
-                ctx.fillStyle = '#008b8b';
+                ctx.fillStyle = isDark ? '#14b8a6' : '#008b8b';
                 ctx.font = 'bold 14px var(--font-sans)';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
@@ -449,6 +501,7 @@
 
             // Bind slider to drawing function
             slider.addEventListener('input', drawSquare);
+            window.addEventListener('themeChange', drawSquare);
 
             // Draw initially
             drawSquare();

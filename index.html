@@ -10,6 +10,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script>
+        (function() {
+            var t = localStorage.getItem('functowerce-theme') || 'light';
+            if (t === 'system') {
+                t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
 </head>
 <body>
 
@@ -26,25 +35,67 @@
                     <span class="line"></span>
                 </button>
                 
+                <!-- Language Selection Dropdown -->
+                <div class="lang-select-wrapper">
+                    <select id="lang-select" class="lang-select" aria-label="Select Language">
+                        <option value="en">🇬🇧 English</option>
+                        <option value="hi">🇮🇳 हिन्दी</option>
+                    </select>
+                </div>
+
                 <!-- Logo & Subtitle Group -->
                 <div class="logo-group">
                     <h1 class="logo-title"><a href="index.html" class="logo-link">Functowerce</a></h1>
-                    <p class="logo-tagline">Only place you needed to learn mathematical functions in very comprehensive way</p>
+                    <p class="logo-tagline" data-i18n="header_tagline">Only place you needed to learn mathematical functions in very comprehensive way</p>
                 </div>
             </div>
             
-            <!-- Profile Button -->
-            <button class="profile-btn" id="btn-profile" aria-label="User Profile">
-                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                    <circle cx="12" cy="7" r="4"/>
-                </svg>
-            </button>
+            <div class="right-section">
+                <!-- Theme Switcher Tabs -->
+                <div class="theme-switcher-tabs" id="theme-switcher" role="radiogroup" aria-label="Theme selection">
+                    <button type="button" class="theme-tab-btn active" data-theme-val="light" role="radio" aria-checked="true" aria-label="Light theme">
+                        <svg class="theme-tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <span class="theme-tab-label" data-i18n="theme_light">Light</span>
+                    </button>
+                    <button type="button" class="theme-tab-btn" data-theme-val="dark" role="radio" aria-checked="false" aria-label="Dark theme">
+                        <svg class="theme-tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                        <span class="theme-tab-label" data-i18n="theme_dark">Dark</span>
+                    </button>
+                    <button type="button" class="theme-tab-btn" data-theme-val="system" role="radio" aria-checked="false" aria-label="System theme">
+                        <svg class="theme-tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                        <span class="theme-tab-label" data-i18n="theme_system">System</span>
+                    </button>
+                </div>
+
+                <!-- Profile Button -->
+                <button class="profile-btn" id="btn-profile" aria-label="User Profile">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </button>
+            </div>
         </header>
 
         <!-- Sub-Header / Tagline -->
         <section class="magic-bar">
-            <p class="magic-text"><strong>Functions</strong> - Magic of mathematics</p>
+            <p class="magic-text" data-i18n="magic_bar"><strong>Functions</strong> - Magic of mathematics</p>
         </section>
 
         <!-- Main Body Grid -->
@@ -53,28 +104,28 @@
             <!-- Left Side: Textbook Content -->
             <article class="content-section">
                 <div class="academic-text">
-                    <p>
+                    <p data-i18n="intro_p1">
                         In mathematics, a <strong>function</strong> from a set X to a set Y assigns to each element of X exactly one element of Y.<span class="citation" data-citation="1">[1]</span> 
                         The set X is called the <strong>domain</strong> of the function<span class="citation" data-citation="2">[2]</span> 
                         and the set Y is called the <strong>codomain</strong> of the function.<span class="citation" data-citation="3">[3]</span>
                     </p>
-                    <p>
+                    <p data-i18n="intro_p2">
                         Functions were originally the idealization of how a varying quantity depends on another quantity. For example, the position of a planet is a function of time. Historically, the concept was elaborated with the infinitesimal calculus at the end of the 17th century, and, until the 19th century, the functions that were considered were differentiable (that is, they had a high degree of regularity).
                     </p>
-                    <p>
+                    <p data-i18n="intro_p3">
                         The concept of a function is often denoted by a letter such as <em>f</em>, <em>g</em> or <em>h</em>. The value of a function <em>f</em> at an element <em>x</em> of its domain (that is, the element of the codomain that is associated with <em>x</em>) is denoted by <em>f(x)</em>; for example, the value of <em>f</em> at <em>x</em> = 4 is denoted by <em>f</em>(4). Commonly, a specific function is defined by means of an expression depending on <em>x</em>, such as <code>f(x) = x² + 1</code>; in this case, some computation, called function evaluation, may be needed for deducing the value of the function at a particular value; for example, if <code>f(x) = x² + 1</code>, then <code>f(4) = 4² + 1 = 17</code>.
                     </p>
                     <!-- LaTeX Style Math Display Block -->
                     <div class="math-block" aria-label="Mathematical formula showing function evaluation">
                         {\displaystyle f(4)=4^{2}+1=17.}
                     </div>
-                    <p>
+                    <p data-i18n="intro_p4">
                         Given its domain and its codomain, a function is uniquely represented by the set of all pairs <em>(x, f(x))</em>, called the <strong>graph of the function</strong>, a popular means of illustrating the function. When the domain and the codomain are sets of real numbers, each such pair may be thought of as the Cartesian coordinates of a point in the plane.
                     </p>
-                    <p>
+                    <p data-i18n="intro_p5">
                         Functions are widely used in science, engineering, and in most fields of mathematics. It has been said that functions are <em>"the central objects of investigation"</em> in most fields of mathematics.
                     </p>
-                    <p>
+                    <p data-i18n="intro_p6">
                         The concept of a function has evolved significantly over centuries, from its informal origins in ancient mathematics to its formalization in the 19th century. See <a href="https://en.wikipedia.org/wiki/History_of_the_function_concept" target="_blank" rel="noopener">History of the function concept</a> for details.
                     </p>
                     <div class="source-attribution">
@@ -84,15 +135,15 @@
 
                 <!-- Footnotes section -->
                 <footer class="footnotes-area">
-                    <div class="footnote-item" id="fn-1">
+                    <div class="footnote-item" id="fn-1" data-i18n="fn_1">
                         <span class="fn-num">[1]</span>
                         <p class="fn-desc">Halmos, Paul R. (1974). <em>Naive Set Theory</em>. Springer-Verlag. A function is defined as a relation satisfying specific uniqueness conditions.</p>
                     </div>
-                    <div class="footnote-item" id="fn-2">
+                    <div class="footnote-item" id="fn-2" data-i18n="fn_2">
                         <span class="fn-num">[2]</span>
                         <p class="fn-desc">The set of all inputs for which the function is defined and produces a valid output.</p>
                     </div>
-                    <div class="footnote-item" id="fn-3">
+                    <div class="footnote-item" id="fn-3" data-i18n="fn_3">
                         <span class="fn-num">[3]</span>
                         <p class="fn-desc">The set of target values into which the function's output is constrained to fall.</p>
                     </div>
@@ -104,8 +155,8 @@
                 
                 <!-- Tab Controls -->
                 <div class="tab-controls">
-                    <button class="tab-btn active" data-tab="mapping">Set Mapping (X &rarr; Y)</button>
-                    <button class="tab-btn" data-tab="grapher">Interactive Grapher</button>
+                    <button class="tab-btn active" data-tab="mapping" data-i18n="tab_mapping">Set Mapping (X &rarr; Y)</button>
+                    <button class="tab-btn" data-tab="grapher" data-i18n="tab_grapher">Interactive Grapher</button>
                 </div>
 
                 <!-- Tab 1: Set Mapping Visualizer -->
@@ -113,7 +164,7 @@
                     <div class="mapping-container">
                         <!-- Domain Set X -->
                         <div class="set-container" id="set-x">
-                            <span class="set-title">Domain (X)</span>
+                            <span class="set-title" data-i18n="domain_title">Domain (X)</span>
                             <div class="set-elements">
                                 <div class="element-node" data-val="1">x₁</div>
                                 <div class="element-node" data-val="2">x₂</div>
@@ -132,7 +183,7 @@
 
                         <!-- Codomain Set Y -->
                         <div class="set-container" id="set-y">
-                            <span class="set-title">Codomain (Y)</span>
+                            <span class="set-title" data-i18n="codomain_title">Codomain (Y)</span>
                             <div class="set-elements">
                                 <div class="element-node y-node" data-val="a">y₁</div>
                                 <div class="element-node y-node" data-val="b">y₂</div>
@@ -141,7 +192,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="interactive-note">
+                    <div class="interactive-note" data-i18n="mapping_note">
                         Hover over a domain element in <strong>X</strong> to see how it uniquely maps to <strong>Y</strong>.
                     </div>
                 </div>
@@ -151,10 +202,10 @@
                     <div class="grapher-card">
                         <div class="grapher-header">
                             <select id="select-function" class="style-select">
-                                <option value="linear">Linear: f(x) = x</option>
-                                <option value="quadratic">Quadratic: f(x) = x²</option>
-                                <option value="sine">Sine: f(x) = sin(x)</option>
-                                <option value="exponential">Exponential: f(x) = 2ˣ</option>
+                                <option value="linear" data-i18n="opt_linear">Linear: f(x) = x</option>
+                                <option value="quadratic" data-i18n="opt_quadratic">Quadratic: f(x) = x²</option>
+                                <option value="sine" data-i18n="opt_sine">Sine: f(x) = sin(x)</option>
+                                <option value="exponential" data-i18n="opt_exponential">Exponential: f(x) = 2ˣ</option>
                             </select>
                         </div>
                         
@@ -164,11 +215,11 @@
 
                         <div class="slider-controls">
                             <div class="slider-row">
-                                <label for="x-input">Input (x): <span id="x-val-label">0.0</span></label>
+                                <label for="x-input"><span data-i18n="input_x">Input (x):</span> <span id="x-val-label">0.0</span></label>
                                 <input type="range" id="x-input" min="-3" max="3" step="0.1" value="0">
                             </div>
                             <div class="result-display">
-                                Output f(x) = <span id="y-val-label" class="highlight-val">0.0</span>
+                                <span data-i18n="output_y">Output f(x) =</span> <span id="y-val-label" class="highlight-val">0.0</span>
                             </div>
                         </div>
                     </div>
@@ -179,32 +230,32 @@
 
         <!-- Function Selection Section -->
         <section class="function-selection" id="function-selection">
-            <h2 class="selection-title">Know more about some common functions</h2>
+            <h2 class="selection-title" data-i18n="section_common_title">Know more about some common functions</h2>
             <div class="function-grid">
                 <a href="quadratic.html" class="function-card active-card">
-                    <span class="card-badge">Explore</span>
+                    <span class="card-badge" data-i18n="card_badge_explore">Explore</span>
                     <div class="card-formula">y = x²</div>
-                    <div class="card-name">Quadratic Function</div>
+                    <div class="card-name" data-i18n="fn_name_quadratic">Quadratic Function</div>
                 </a>
                 <a href="404.html" class="function-card">
-                    <span class="card-badge">Explore</span>
+                    <span class="card-badge" data-i18n="card_badge_explore">Explore</span>
                     <div class="card-formula">y = [x]</div>
-                    <div class="card-name">Greatest Integer Function</div>
+                    <div class="card-name" data-i18n="fn_name_greatest">Greatest Integer Function</div>
                 </a>
                 <a href="404.html" class="function-card">
-                    <span class="card-badge">Explore</span>
+                    <span class="card-badge" data-i18n="card_badge_explore">Explore</span>
                     <div class="card-formula">y = {x}</div>
-                    <div class="card-name">Fractional Part Function</div>
+                    <div class="card-name" data-i18n="fn_name_fractional">Fractional Part Function</div>
                 </a>
                 <a href="404.html" class="function-card">
-                    <span class="card-badge">Explore</span>
+                    <span class="card-badge" data-i18n="card_badge_explore">Explore</span>
                     <div class="card-formula">y = sin(x)</div>
-                    <div class="card-name">Sine Function</div>
+                    <div class="card-name" data-i18n="fn_name_sine">Sine Function</div>
                 </a>
                 <a href="404.html" class="function-card">
-                    <span class="card-badge">Explore</span>
+                    <span class="card-badge" data-i18n="card_badge_explore">Explore</span>
                     <div class="card-formula">y = cos(x)</div>
-                    <div class="card-name">Cosine Function</div>
+                    <div class="card-name" data-i18n="fn_name_cosine">Cosine Function</div>
                 </a>
             </div>
         </section>
@@ -212,25 +263,25 @@
         <!-- Sidebar Navigation Drawer -->
         <aside class="sidebar-drawer" id="sidebar-drawer">
             <nav class="sidebar-nav">
-                <a href="index.html" class="nav-item active">Introduction</a>
-                <a href="quadratic.html" class="nav-item">Quadratic Function (y=x²)</a>
-                <a href="#function-selection" class="nav-item">Common Functions</a>
-                <a href="404.html" class="nav-item">Types of Functions</a>
-                <a href="404.html" class="nav-item">Domain & Codomain</a>
-                <a href="404.html" class="nav-item">Inverse Functions</a>
+                <a href="index.html" class="nav-item active" data-i18n="nav_intro">Introduction</a>
+                <a href="quadratic.html" class="nav-item" data-i18n="nav_quadratic">Quadratic Function (y=x²)</a>
+                <a href="#function-selection" class="nav-item" data-i18n="nav_common">Common Functions</a>
+                <a href="404.html" class="nav-item" data-i18n="nav_types">Types of Functions</a>
+                <a href="404.html" class="nav-item" data-i18n="nav_domain">Domain & Codomain</a>
+                <a href="404.html" class="nav-item" data-i18n="nav_inverse">Inverse Functions</a>
             </nav>
         </aside>
         
         <!-- Profile Dropdown Modal -->
         <div class="profile-modal" id="profile-modal">
             <div class="profile-header">
-                <h3>Welcome Scholar</h3>
-                <p>Track your mathematical progress</p>
+                <h3 data-i18n="profile_welcome">Welcome Scholar</h3>
+                <p data-i18n="profile_sub">Track your mathematical progress</p>
             </div>
             <ul class="profile-links">
-                <li><a href="404.html">My Dashboard</a></li>
-                <li><a href="404.html">Bookmarks</a></li>
-                <li><a href="404.html">Settings</a></li>
+                <li><a href="404.html" data-i18n="profile_dashboard">My Dashboard</a></li>
+                <li><a href="404.html" data-i18n="profile_bookmarks">Bookmarks</a></li>
+                <li><a href="404.html" data-i18n="profile_settings">Settings</a></li>
             </ul>
         </div>
 
