@@ -84,7 +84,39 @@ def calculate():
         response.headers.add("Access-Control-Allow-Origin", "*")
         return response, 400
 
+@app.route('/greatest_integer', methods=['GET'])
+def greatest_integer():
+    # Grab the value of 'n' or 'x' sent by JavaScript
+    n_param = request.args.get('n', '') or request.args.get('x', '')
+    
+    if not n_param:
+        response = jsonify({"error": "No value provided"})
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response, 400
+        
+    try:
+        n_value = float(n_param)
+        result_value = box(n_value)
+        
+        # Format the response as JSON
+        response = jsonify({
+            "result": result_value,
+            "input": n_value,
+            "function": "greatest_integer"
+        })
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
+
+    except ValueError:
+        response = jsonify({"error": "Invalid number format"})
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response, 400
+
+# Alias route for box
+@app.route('/box', methods=['GET'])
+def box_route():
+    return greatest_integer()
+
 #Start the Backend Server
 if __name__ == '__main__':
-    
     app.run(port=5000, debug=True)

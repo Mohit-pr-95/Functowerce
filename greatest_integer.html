@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>y = [x] (Greatest Integer Function) - Functowerce</title>
+    <meta name="description" content="Explore the greatest integer function (floor function) y = [x]: properties, staircase graphs, step jump discontinuities, applications, and interactive backend calculator.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="greatest_integer.css">
+    <script>
+        (function() {
+            var t = localStorage.getItem('functowerce-theme') || 'light';
+            if (t === 'system') {
+                t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
+</head>
+<body>
+
+    <!-- App Wrapper -->
+    <div class="site-wrapper">
+        
+        <!-- Top Navigation / Header -->
+        <header class="content-top">
+            <div class="left-section">
+                <!-- Menu Button -->
+                <button class="menu-btn" id="btn-menu" aria-label="Toggle Menu">
+                    <span class="line"></span>
+                    <span class="line"></span>
+                    <span class="line"></span>
+                </button>
+                
+                <!-- Language Selection Dropdown -->
+                <div class="lang-select-wrapper">
+                    <select id="lang-select" class="lang-select" aria-label="Select Language">
+                        <option value="en">🇬🇧 English</option>
+                        <option value="hi">🇮🇳 हिन्दी</option>
+                    </select>
+                </div>
+
+                <!-- Logo & Subtitle Group -->
+                <div class="logo-group">
+                    <h1 class="logo-title"><a href="index.html" class="logo-link">Functowerce</a></h1>
+                    <p class="logo-tagline" data-i18n="header_tagline">Only place you needed to learn mathematical functions in very comprehensive way</p>
+                </div>
+            </div>
+            
+            <div class="right-section">
+                <!-- Theme Switcher Tabs -->
+                <div class="theme-switcher-tabs" id="theme-switcher" role="radiogroup" aria-label="Theme selection">
+                    <button type="button" class="theme-tab-btn active" data-theme-val="light" role="radio" aria-checked="true" aria-label="Light theme">
+                        <svg class="theme-tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <span class="theme-tab-label" data-i18n="theme_light">Light</span>
+                    </button>
+                    <button type="button" class="theme-tab-btn" data-theme-val="dark" role="radio" aria-checked="false" aria-label="Dark theme">
+                        <svg class="theme-tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                        <span class="theme-tab-label" data-i18n="theme_dark">Dark</span>
+                    </button>
+                    <button type="button" class="theme-tab-btn" data-theme-val="system" role="radio" aria-checked="false" aria-label="System theme">
+                        <svg class="theme-tab-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                        <span class="theme-tab-label" data-i18n="theme_system">System</span>
+                    </button>
+                </div>
+
+                <!-- Profile Button -->
+                <button class="profile-btn" id="btn-profile" aria-label="User Profile">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Sub-Header / Tagline -->
+        <section class="magic-bar">
+            <p class="magic-text" data-i18n="magic_bar_greatest"><strong>y = [x]</strong> - The Greatest Integer Function (Floor Function)</p>
+        </section>
+
+        <!-- Main Body Grid -->
+        <main class="main-body">
+            
+            <!-- Left Side: Textbook Content -->
+            <article class="content-section">
+                <div class="academic-text">
+                    <h2 data-i18n="gif_intro_h2">Introduction to y = [x]</h2>
+                    <p data-i18n="gif_intro_p1">
+                        The <strong>Greatest Integer Function</strong>, denoted as <code>y = [x]</code> or <code>f(x) = &lfloor;x&rfloor;</code> (also known as the <strong>floor function</strong>), outputs the largest integer that is less than or equal to <em>x</em>.<span class="citation" data-citation="1">[1]</span>
+                    </p>
+                    <p data-i18n="gif_intro_p2">
+                        Visually, <code>y = [x]</code> produces a characteristic staircase graph composed of horizontal line segments. For any real input <em>x</em> in the interval <code>[n, n+1)</code> where <em>n</em> is an integer, the value of <code>f(x)</code> remains constant at <em>n</em>.
+                    </p>
+                    
+                    <h3 data-i18n="gif_origin_h3">Origin and Historical Context</h3>
+                    <p data-i18n="gif_origin_p1">
+                        The concept of rounding down to the nearest integer has been used implicitly since ancient mathematics. In 1808, Carl Friedrich Gauss introduced the bracket notation <code>[x]</code> in his work on quadratic reciprocity.
+                    </p>
+                    <p data-i18n="gif_origin_p2">
+                        In 1962, Kenneth E. Iverson introduced the terms <em>floor</em> and <em>ceiling</em> along with the floor notation <code>&lfloor;x&rfloor;</code> while defining the APL programming language. Today, both bracket <code>[x]</code> and floor <code>&lfloor;x&rfloor;</code> notations are widely standard across mathematics and computer science.
+                    </p>
+
+                    <!-- LaTeX Style Formula -->
+                    <div class="math-block" aria-label="Formula for greatest integer function">
+                        {\displaystyle f(x)=\lfloor x\rfloor ,\quad [2.7]=2,\quad [-1.4]=-2}
+                    </div>
+
+                    <h3 data-i18n="gif_props_h3">Core Properties</h3>
+                    <p data-i18n="gif_props_p1">
+                        The domain of <code>y = [x]</code> is all real numbers <code>(&minus;&infty;, +&infty;)</code>. The range is the set of integers <code>&integers;</code>. The function features jump discontinuities at every integer value.
+                    </p>
+                    <p data-i18n="gif_props_p2">
+                        The slope (derivative) <code>f'(x) = 0</code> for all non-integer inputs, while the derivative is undefined at integer jump points where the function steps up by 1.
+                    </p>
+
+                    <h3 data-i18n="gif_examples_h3">Worked Examples</h3>
+                    <p data-i18n="gif_examples_p1">
+                        If <code>x = 2.7</code>, then <code>y = [2.7] = 2</code>. If <code>x = -1.4</code>, then <code>y = [-1.4] = -2</code>. Note that for negative numbers, rounding down moves to the next smaller integer to the left on the number line.
+                    </p>
+                    <p data-i18n="gif_examples_p2">
+                        A sample table of values demonstrates the step behavior:
+                    </p>
+                    <div class="value-strip value-strip-step" aria-label="Sample values for greatest integer function">
+                        <span>x: -2.5 &rarr; y: -3</span>
+                        <span>x: -1.0 &rarr; y: -1</span>
+                        <span>x: -0.4 &rarr; y: -1</span>
+                        <span>x: 0.0 &rarr; y: 0</span>
+                        <span>x: 1.8 &rarr; y: 1</span>
+                        <span>x: 2.7 &rarr; y: 2</span>
+                        <span>x: 3.0 &rarr; y: 3</span>
+                    </div>
+
+                    <h3 data-i18n="gif_sci_h3">Scientific and Engineering Uses</h3>
+                    <p data-i18n="gif_sci_p1">
+                        <strong>Signal Processing & Digitization:</strong> Analog-to-Digital Converters (ADCs) quantize continuous analog signals into discrete voltage levels using floor function steps.<span class="citation" data-citation="2">[2]</span>
+                    </p>
+                    <p data-i18n="gif_sci_p2">
+                        <strong>Computer Science & Data Structures:</strong> Greatest integer functions determine hash table bucket indices, binary tree depth bounds, discrete event scheduling ticks, and integer arithmetic operations.
+                    </p>
+
+                    <h3 data-i18n="gif_real_h3">Real-Life Uses</h3>
+                    <p data-i18n="gif_real_p1">
+                        <strong>Tiered Pricing & Metered Services:</strong> Parking garage rates, taxi meter charges, and cellular data plans charge in full-step increments based on floor function rules.
+                    </p>
+                    <p data-i18n="gif_real_p2">
+                        <strong>Postage & Shipping Rates:</strong> Package shipping costs are calculated based on whole-pound or whole-kilogram step tiers.
+                    </p>
+                    <p data-i18n="gif_real_p3">
+                        <strong>Age in Years:</strong> Human age is conventionally calculated as <code>[age]</code> in completed full years.<span class="citation" data-citation="3">[3]</span>
+                    </p>
+
+                    <h3 data-i18n="gif_trans_h3">How Transformations Work</h3>
+                    <p data-i18n="gif_trans_p1">
+                        Combining <code>[x]</code> with <em>x</em> yields the fractional part function <code>{x} = x - [x]</code>. Transformations like <code>y = a[bx + c] + d</code> scale step height (<em>a</em>), step width (1/<em>b</em>), and shift step origins.
+                    </p>
+
+                    <div class="back-nav">
+                        <a href="index.html" class="back-btn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>
+                            <span data-i18n="back_to_intro">Back to Introduction</span>
+                        </a>
+                    </div>
+
+                    <div class="source-attribution">
+                        Source: <a href="https://en.wikipedia.org/wiki/Floor_and_ceiling_functions" target="_blank" rel="noopener">Wikipedia</a>
+                    </div>
+                </div>
+
+                <!-- Footnotes section -->
+                <footer class="footnotes-area">
+                    <div class="footnote-item" id="fn-1">
+                        <span class="fn-num">[1]</span>
+                        <p class="fn-desc">For any real number x, the greatest integer function [x] returns the unique integer n such that n &le; x &lt; n + 1.</p>
+                    </div>
+                    <div class="footnote-item" id="fn-2">
+                        <span class="fn-num">[2]</span>
+                        <p class="fn-desc">In digital signal processing, step quantization rounds continuous signal amplitudes to discrete digital levels.</p>
+                    </div>
+                    <div class="footnote-item" id="fn-3">
+                        <span class="fn-num">[3]</span>
+                        <p class="fn-desc">Age calculations truncate fractional years to output completed years as an integer.</p>
+                    </div>
+                </footer>
+            </article>
+
+            <!-- Right Side: Properties & Step Visualizer -->
+            <section class="interactive-playground">
+                
+                <!-- Tab Controls -->
+                <div class="tab-controls">
+                    <button class="tab-btn active" data-tab="properties" data-i18n="tab_properties">Key Properties</button>
+                    <button class="tab-btn" data-tab="visualizer" data-i18n="gif_tab_visualizer">Step Visualizer</button>
+                </div>
+
+                <!-- Tab 1: Key Properties -->
+                <div class="tab-content active" id="tab-properties">
+                    <div class="properties-container">
+                        <table class="properties-table">
+                            <tbody>
+                                <tr>
+                                    <td class="prop-name" data-i18n="prop_formula">Function Formula</td>
+                                    <td class="prop-val">f(x) = [x] = &lfloor;x&rfloor;</td>
+                                </tr>
+                                <tr>
+                                    <td class="prop-name" data-i18n="prop_geometry">Curve Geometry</td>
+                                    <td class="prop-val" data-i18n="gif_prop_geometry_val">Staircase / Step Function</td>
+                                </tr>
+                                <tr>
+                                    <td class="prop-name">Discontinuities</td>
+                                    <td class="prop-val">Integer points (x &in; &integers;)</td>
+                                </tr>
+                                <tr>
+                                    <td class="prop-name" data-i18n="prop_domain">Domain</td>
+                                    <td class="prop-val">(-&infty;, +&infty;)</td>
+                                </tr>
+                                <tr>
+                                    <td class="prop-name" data-i18n="prop_range">Range</td>
+                                    <td class="prop-val">&integers; (Integers)</td>
+                                </tr>
+                                <tr>
+                                    <td class="prop-name" data-i18n="prop_parity">Parity (Symmetry)</td>
+                                    <td class="prop-val">Neither Even nor Odd</td>
+                                </tr>
+                                <tr>
+                                    <td class="prop-name" data-i18n="prop_derivative">Derivative (Slope)</td>
+                                    <td class="prop-val">f'(x) = 0 for x &notin; &integers;</td>
+                                </tr>
+                                <tr>
+                                    <td class="prop-name">Step Jump Height</td>
+                                    <td class="prop-val">&Delta;y = 1 at integers</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="interactive-note" data-i18n="gif_prop_note">
+                        This table lists the mathematical properties of the greatest integer function.
+                    </div>
+                </div>
+
+                <!-- Tab 2: Step Visualizer -->
+                <div class="tab-content" id="tab-visualizer">
+                    <div class="step-visualizer-card">
+                        <div class="step-display">
+                            Input (x) = <span id="step-x-val">2.7</span> &nbsp;|&nbsp; Output [x] = <span id="step-y-val">2</span>
+                        </div>
+                        
+                        <div class="step-canvas-wrapper">
+                            <canvas id="step-canvas" width="300" height="220"></canvas>
+                        </div>
+
+                        <div class="step-interval-info">
+                            <span>Interval:</span>
+                            <span id="step-interval-val" class="interval-badge">[2, 3)</span>
+                        </div>
+
+                        <div class="slider-controls visualizer-controls">
+                            <div class="slider-row">
+                                <label for="x-slider"><span data-i18n="gif_input_val">Step Input (x):</span> <span id="slider-label">2.7</span></label>
+                                <input type="range" id="x-slider" min="-4" max="4" step="0.1" value="2.7">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="interactive-note" data-i18n="gif_visualizer_note">
+                        Drag the slider to see how the greatest integer <strong>[x]</strong> steps between integer levels as <strong>x</strong> changes.
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Function Calculator Section -->
+            <section class="content-section">
+                <div class="calculator-header">
+                    <span class="calc-badge" data-i18n="calc_badge">Calculator</span>
+                    <h2 class="calc-title" data-i18n="gif_calc_title">Greatest Integer Calculator</h2>
+                    <p class="calc-desc" data-i18n="gif_calc_desc">Enter a value of x to compute [x] from the backend.</p>
+                </div>
+                
+                <div class="calculator-grid">
+                    <!-- Input Section -->
+                    <div class="calc-panel input-panel">
+                        <label for="calc-x-input" class="calc-panel-label" data-i18n="calc_input_label">Input (<span class="math-var">x</span>)</label>
+                        <div class="input-field-wrapper">
+                            <input type="number" id="calc-x-input" class="calc-field calc-input" placeholder="Enter x value..." data-i18n-ph="calc_input_ph" step="any">
+                            <span class="field-symbol">x</span>
+                        </div>
+                        <button id="calc-btn" class="calc-btn">
+                            <span data-i18n="calc_btn_text">Calculate</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                        <span class="calc-panel-hint" data-i18n="calc_hint_input">Press Enter or click Calculate</span>
+                    </div>
+
+                    <!-- Visual Divider / Flow Arrow -->
+                    <div class="calc-flow">
+                        <div class="flow-line"></div>
+                        <div class="flow-badge">
+                            <span class="flow-formula gif-formula"></span>
+                            <svg class="flow-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-line"></div>
+                    </div>
+
+                    <!-- Output Section -->
+                    <div class="calc-panel output-panel">
+                        <label class="calc-panel-label" data-i18n="calc_output_label">Output (<span class="math-var">y</span>)</label>
+                        <div class="output-field-wrapper">
+                            <div id="calc-y-output" class="calc-field calc-output waiting">
+                                <span class="output-placeholder" data-i18n="calc_awaiting">Awaiting input...</span>
+                            </div>
+                            <span class="field-symbol">y</span>
+                        </div>
+                        <span class="calc-panel-hint" data-i18n="calc_hint_output">Value computed by the backend</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Sidebar Navigation Drawer -->
+        <aside class="sidebar-drawer" id="sidebar-drawer">
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item" data-i18n="nav_intro">Introduction</a>
+                <a href="quadratic.html" class="nav-item" data-i18n="nav_quadratic">Quadratic Function (y=x²)</a>
+                <a href="greatest_integer.html" class="nav-item active" data-i18n="nav_greatest">Greatest Integer Function (y=[x])</a>
+                <a href="index.html#function-selection" class="nav-item" data-i18n="nav_common">Common Functions</a>
+                <a href="404.html" class="nav-item" data-i18n="nav_types">Types of Functions</a>
+                <a href="404.html" class="nav-item" data-i18n="nav_domain">Domain & Codomain</a>
+                <a href="404.html" class="nav-item" data-i18n="nav_inverse">Inverse Functions</a>
+            </nav>
+        </aside>
+        
+        <!-- Profile Dropdown Modal -->
+        <div class="profile-modal" id="profile-modal">
+            <div class="profile-header">
+                <h3 data-i18n="profile_welcome">Welcome Scholar</h3>
+                <p data-i18n="profile_sub">Track your mathematical progress</p>
+            </div>
+            <ul class="profile-links">
+                <li><a href="404.html" data-i18n="profile_dashboard">My Dashboard</a></li>
+                <li><a href="404.html" data-i18n="profile_bookmarks">Bookmarks</a></li>
+                <li><a href="404.html" data-i18n="profile_settings">Settings</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- Main Navigation & i18n Script -->
+    <script src="script.js"></script>
+    
+    <!-- Local Interactive Visualizer Script -->
+    <script src="greatest_integer.js"></script>
+</body>
+</html>
