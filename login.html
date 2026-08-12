@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Functowerce/Login</title>
+    <link rel="stylesheet" href="login.css">
+  </head>
+  <body>
+    <h1 id="Functowerce">FUNCTOWERCE</h1>
+    <div id="outer_box">
+      <h3 id="create_account_text"><pre id="pre_tag_text">                            Log In</pre></h3></h3>
+      <br><br>
+      <form action="loading.html" id="login_form" method="GET">
+        <p id="username">username</p>
+        <br>
+        <input type="text" id="username_input" name="username_input" placeholder="e.g. user9565_iu" required>
+        <br>
+        <br><br>
+        <hr>
+        <br>
+        <p id="password">password</p>
+        <br>
+        
+        <input type="password" id="password_input" name="password_input" placeholder="Enter Your password" required>
+        <br><br><br>
+        
+        <button type="submit" id="submit">Submit</button>
+      </form>
+    </div>
+    <script>
+      document.getElementById('login_form').addEventListener('submit', function() {
+        var username = document.getElementById('username_input').value;
+        if (username) {
+          localStorage.setItem('functowerce_username', username);
+          sessionStorage.setItem('functowerce_username', username);
+        }
+      });
+    </script>
+  </body>
+</html>

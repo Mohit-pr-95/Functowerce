@@ -25,13 +25,12 @@ body {
     font-weight: 650;
     letter-spacing: 0.5px;
     color: #1a1f2c;
-    /*text-shadow: 0 2px 12px rgba(37,99,235,0.18)*/
 }
 
-#login_box {
+#outer_box {
     width: min(90%, 390px);
     padding: 34px 30px;
-    text-align: center;
+    text-align: left;
     border: 1px solid rgba(255, 255, 255, 0.75);
     border-radius: 8px;
     background:
@@ -43,29 +42,83 @@ body {
         inset 0 -1px 0 rgba(98, 110, 124, 0.22);
 }
 
-h3 {
+#username,
+#password {
     font-size: 1.15rem;
     font-weight: 700;
     color: #273044;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+    text-transform: capitalize;
 }
 
 hr {
-    width: 80%;
+    width: 100%;
     height: 1px;
-    margin: 26px auto;
     border: 0;
     background: linear-gradient(90deg, transparent, #7e8a99, #fff4bf, transparent);
 }
 
-button {
+input {
     width: 100%;
+    min-height: 48px;
+    padding: 0 16px;
+    border: 1px solid rgba(98, 110, 124, 0.3);
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.75);
+    color: #1a1f2c;
+    font-size: 0.98rem;
+    font-family: Arial, Helvetica, sans-serif;
+    box-shadow: inset 0 1px 3px rgba(33, 43, 54, 0.1);
+    transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        background-color 180ms ease;
+}
+
+input::placeholder {
+    color: #6b7484;
+}
+
+input:hover {
+    border-color: rgba(37, 99, 235, 0.4);
+}
+
+input:focus {
+    outline: none;
+    border-color: #2563eb;
+    background: #ffffff;
+    box-shadow:
+        inset 0 1px 3px rgba(33, 43, 54, 0.08),
+        0 0 0 3px rgba(37, 99, 235, 0.18);
+}
+
+#password_input {
+    border-color: rgba(14, 165, 164, 0.35);
+}
+
+#password_input:hover {
+    border-color: rgba(14, 165, 164, 0.55);
+}
+
+#password_input:focus {
+    border-color: #0ea5a4;
+    box-shadow:
+        inset 0 1px 3px rgba(33, 43, 54, 0.08),
+        0 0 0 3px rgba(14, 165, 164, 0.18);
+}
+
+#submit {
+    width: 100%;
+    font-family: "Amazon Amber";
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: white;
     min-height: 48px;
     border: 0;
     border-radius: 7px;
     cursor: pointer;
     overflow: hidden;
-    background: #2563eb;
+    background: #2595eb;
     box-shadow: 0 10px 20px rgba(37, 99, 235, 0.22);
     transition:
         transform 180ms ease,
@@ -74,64 +127,36 @@ button {
         opacity 180ms ease;
 }
 
-button:hover {
+#submit:hover {
     background: #1d4ed8;
     transform: translateY(-2px);
     box-shadow: 0 14px 26px rgba(37, 99, 235, 0.28);
 }
 
-button:active {
+#submit:active {
     transform: translateY(1px) scale(0.99);
     opacity: 0.92;
     box-shadow: 0 6px 14px rgba(37, 99, 235, 0.2);
 }
 
-button a {
-    display: flex;
-    min-height: 48px;
-    align-items: center;
-    justify-content: center;
-    padding: 0 18px;
-    color: #ffffff;
-    font-size: 0.98rem;
-    font-weight: 700;
-    text-decoration: none;
+#create_account_text {
+  width: 100%;
+  font-family: "Amazon Amber";
+  font-size: 1.10rem;
+  color: #1a1f2c;
+  font-weight: 800;
 }
 
-button:first-of-type {
-    background: #0ea5a4;
-    box-shadow: 0 10px 20px rgba(14, 165, 164, 0.2);
+#pre_tag_text {
+  font-family: Arial, Helvetica, sans-serif;
 }
-
-button:first-of-type:hover {
-    background: #0f8f8e;
-    box-shadow: 0 14px 26px rgba(14, 165, 164, 0.26);
-}
-
-button:first-of-type:active {
-    box-shadow: 0 6px 14px rgba(14, 165, 164, 0.18);
-}
-
-button:last-of-type {
-    background: #f59e0b;
-    box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);
-}
-
-button:last-of-type:hover {
-    background: #d97706;
-    box-shadow: 0 14px 26px rgba(245, 158, 11, 0.26);
-}
-
-button:last-of-type:active {
-    box-shadow: 0 6px 14px rgba(245, 158, 11, 0.18);
-}
-
 @media (max-width: 420px) {
-    #login_box {
+    #outer_box {
         padding: 28px 22px;
     }
 
-    h3 {
+    #username,
+    #password {
         font-size: 1rem;
     }
 }

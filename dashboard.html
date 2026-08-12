@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Profile - Functowerce</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Anton&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="dashboard.css">
+        <script>
+            (function() {
+                var t = localStorage.getItem('functowerce-theme') || 'light';
+                if (t === 'system') {
+                    t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                }
+                document.documentElement.setAttribute('data-theme', t);
+            })();
+        </script>
+    </head>
+    <body>
+        <div class="dashboard-wrapper">
+            <!-- Modern Header Bar -->
+            <header class="header">
+                <div class="header-left">
+                    <h1 class="logo-title"><a href="main.html">FUNCTOWERCE</a></h1>
+                </div>
+                <div class="header-right">
+                    <!-- Mode Switcher Tabs -->
+                    <div class="theme-switcher-tabs" id="theme-switcher" role="radiogroup" aria-label="Theme selection">
+                        <button type="button" class="theme-tab-btn" data-theme-val="light" aria-label="Light theme">
+                            <svg class="theme-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="5"></circle>
+                                <line x1="12" y1="1" x2="12" y2="3"></line>
+                                <line x1="12" y1="21" x2="12" y2="23"></line>
+                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                <line x1="1" y1="12" x2="3" y2="12"></line>
+                                <line x1="21" y1="12" x2="23" y2="12"></line>
+                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                            </svg>
+                            <span>Light</span>
+                        </button>
+                        <button type="button" class="theme-tab-btn" data-theme-val="dark" aria-label="Dark theme">
+                            <svg class="theme-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                            </svg>
+                            <span>Dark</span>
+                        </button>
+                        <button type="button" class="theme-tab-btn" data-theme-val="system" aria-label="System theme">
+                            <svg class="theme-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                <line x1="8" y1="21" x2="16" y2="21"></line>
+                                <line x1="12" y1="17" x2="12" y2="21"></line>
+                            </svg>
+                            <span>System</span>
+                        </button>
+                    </div>
+                    
+                    <a href="main.html" class="nav-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        <span>Home</span>
+                    </a>
+                    
+                    <a href="login.html" class="nav-btn logout-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </header>
+
+            <!-- Minimal Profile Container -->
+            <div class="profile-container">
+                <main class="dashboard-card">
+                    <!-- Profile Avatar Ring with Status Badge -->
+                    <div class="profile-avatar-wrapper">
+                        <div id="profile_pic">
+                            <div class="avatar-inner">
+                                <svg class="default-avatar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                        <span class="status-badge" title="Active Scholar"></span>
+                    </div>
+
+                    <!-- User Info Section -->
+                    <div class="user-info-group">
+                        <h2 id="username_display">userName_input</h2>
+                        <div class="role-pill">
+                            <span class="role-dot"></span>
+                            <span>Scholar</span>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <script>
+            // Username Parsing System
+            (function parseUsername() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const fromQuery = urlParams.get('username_input') || urlParams.get('username');
+                const fromLocal = localStorage.getItem('functowerce_username');
+                const fromSession = sessionStorage.getItem('functowerce_username');
+
+                const username = fromQuery || fromLocal || fromSession || 'Guest User';
+
+                if (fromQuery) {
+                    localStorage.setItem('functowerce_username', fromQuery);
+                }
+
+                const usernameEl = document.getElementById('username_display');
+                if (usernameEl) {
+                    usernameEl.textContent = username;
+                }
+            })();
+
+            // Theme Modes Functionality
+            (function initModes() {
+                const THEME_KEY = 'functowerce-theme';
+                const themeBtns = document.querySelectorAll('.theme-tab-btn');
+
+                function applyTheme(themeMode) {
+                    let activeTheme = themeMode;
+                    if (themeMode === 'system') {
+                        activeTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                    }
+                    document.documentElement.setAttribute('data-theme', activeTheme);
+                    localStorage.setItem(THEME_KEY, themeMode);
+
+                    themeBtns.forEach(btn => {
+                        const val = btn.getAttribute('data-theme-val');
+                        if (val === themeMode) {
+                            btn.classList.add('active');
+                        } else {
+                            btn.classList.remove('active');
+                        }
+                    });
+                }
+
+                const currentSaved = localStorage.getItem(THEME_KEY) || 'light';
+                applyTheme(currentSaved);
+
+                themeBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const mode = btn.getAttribute('data-theme-val');
+                        applyTheme(mode);
+                    });
+                });
+
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+                    if (localStorage.getItem(THEME_KEY) === 'system') {
+                        applyTheme('system');
+                    }
+                });
+            })();
+        </script>
+    </body>
+</html>

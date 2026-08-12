@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <meta http-equiv="refresh" content="5; url=main.html">
+    <style>
+        /* Import a clean, modern font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            /* Retained original full height and flexbox centering */
+            height: 100vh; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Modern light gradient background */
+            background: linear-gradient(135deg, #f6f8fd 0%, #e9edf8 100%);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        /* Added a stylized card container for aesthetics */
+        .loader-card {
+            background-color: #ffffff;
+            padding: 40px 60px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+
+        /* Improved spinner with modern colors */
+        .spinner {
+            height: 50px;
+            width: 50px;
+            border: 4px solid #e0e7ff;
+            border-radius: 50%; /* Retained circular shape */
+            border-top: 4px solid #4f46e5; /* Modern indigo accent replacing the transparent top */
+            animation: loading 0.8s linear infinite; 
+        }
+
+        .status-text {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1f2937;
+            text-align: center;
+            min-height: 1.5rem;
+        }
+
+        .status-text::after {
+            content: "Verifying access...";
+            animation: textCycle 4s infinite;
+        }
+
+        .sub-text {
+            font-size: 0.875rem;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+        }
+
+        .sub-text::after {
+            content: "";
+            width: 12px;
+            text-align: left;
+            animation: ellipsis 1.5s infinite steps(5, end);
+        }
+        
+        @keyframes loading {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes textCycle {
+            0%, 30% { content: "Verifying access"; }
+            33%, 60% { content: "Loading"; }
+            63%, 100% { content: "Please wait"; }
+        }
+
+        @keyframes ellipsis {
+            0% { content: ""; }
+            25% { content: "."; }
+            50% { content: ".."; }
+            75% { content: "..."; }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader-card">
+        <div class="spinner"></div>
+        <div class="text-container">
+            <h2 class="status-text"></h2>
+            <p class="sub-text">Establishing secure connection</p>
+        </div>
+    </div>
+    <script>
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const user = params.get('username_input') || params.get('username');
+            if (user) {
+                localStorage.setItem('functowerce_username', user);
+                sessionStorage.setItem('functowerce_username', user);
+            }
+            setTimeout(function() {
+                window.location.href = "main.html";
+            }, 3500);
+        })();
+    </script>
+</body>
+</html>
