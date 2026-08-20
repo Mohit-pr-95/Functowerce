@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Rubik+Spray+Paint&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Anton&display=swap');
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -12,118 +13,106 @@ body {
     align-items: center;
     justify-content: center;
     gap: 28px;
-    font-family: Arial, Helvetica, sans-serif;
-    color: #1a1f2c;
-    background:
-        radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.95), transparent 24%),
-        linear-gradient(135deg, #f7fbff 0%, #c8d2dc 28%, #ffffff 48%, #aeb8c3 70%, #fef1bd 100%);
+    font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+    color: #0f172a;
+    background-color: #f8fafc;
+    background-image: 
+        radial-gradient(circle 800px at 50% -100px, rgba(199, 210, 254, 0.5), transparent 70%),
+        linear-gradient(to right, rgba(99, 102, 241, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
+    background-size: 100% 100%, 4rem 4rem, 4rem 4rem;
+    position: relative;
 }
 
 #Functowerce {
-    font-family: "Anton";
-    font-size: clamp(3rem, 6.5vw, 2.80rem);
-    font-weight: 650;
-    letter-spacing: 0.5px;
-    color: #1a1f2c;
-    /*text-shadow: 0 2px 12px rgba(37,99,235,0.18)*/
+    font-family: 'Anton', 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(3rem, 6.5vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #0f172a 30%, #4f46e5 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 #login_box {
-    width: min(90%, 390px);
-    padding: 34px 30px;
+    width: min(90%, 400px);
+    padding: 38px 32px;
     text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.75);
-    border-radius: 8px;
-    background:
-        linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(202, 212, 222, 0.72)),
-        linear-gradient(315deg, rgba(255, 214, 94, 0.28), rgba(39, 217, 207, 0.2));
-    box-shadow:
-        0 24px 60px rgba(33, 43, 54, 0.24),
-        inset 0 1px 0 rgba(255, 255, 255, 0.95),
-        inset 0 -1px 0 rgba(98, 110, 124, 0.22);
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 
+        0 20px 45px -10px rgba(79, 70, 229, 0.12),
+        0 10px 20px -5px rgba(0, 0, 0, 0.04);
 }
 
 h3 {
     font-size: 1.15rem;
     font-weight: 700;
-    color: #273044;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+    color: #1e293b;
 }
 
 hr {
-    width: 80%;
+    width: 85%;
     height: 1px;
     margin: 26px auto;
     border: 0;
-    background: linear-gradient(90deg, transparent, #7e8a99, #fff4bf, transparent);
+    background: linear-gradient(90deg, transparent, #cbd5e1, transparent);
 }
 
 button {
     width: 100%;
-    min-height: 48px;
+    min-height: 50px;
     border: 0;
-    border-radius: 7px;
+    border-radius: 10px;
     cursor: pointer;
     overflow: hidden;
-    background: #2563eb;
-    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.22);
-    transition:
-        transform 180ms ease,
-        background-color 180ms ease,
-        box-shadow 180ms ease,
-        opacity 180ms ease;
+    background: linear-gradient(135deg, #4f46e5, #4338ca);
+    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
+    transition: all 200ms ease;
 }
 
 button:hover {
-    background: #1d4ed8;
+    background: linear-gradient(135deg, #4338ca, #3730a3);
     transform: translateY(-2px);
-    box-shadow: 0 14px 26px rgba(37, 99, 235, 0.28);
+    box-shadow: 0 12px 24px rgba(79, 70, 229, 0.35);
 }
 
 button:active {
     transform: translateY(1px) scale(0.99);
     opacity: 0.92;
-    box-shadow: 0 6px 14px rgba(37, 99, 235, 0.2);
 }
 
 button a {
     display: flex;
-    min-height: 48px;
+    min-height: 50px;
     align-items: center;
     justify-content: center;
     padding: 0 18px;
     color: #ffffff;
-    font-size: 0.98rem;
+    font-size: 1rem;
     font-weight: 700;
     text-decoration: none;
 }
 
 button:first-of-type {
-    background: #0ea5a4;
-    box-shadow: 0 10px 20px rgba(14, 165, 164, 0.2);
+    background: linear-gradient(135deg, #0284c7, #0369a1);
+    box-shadow: 0 8px 20px rgba(2, 132, 199, 0.25);
 }
 
 button:first-of-type:hover {
-    background: #0f8f8e;
-    box-shadow: 0 14px 26px rgba(14, 165, 164, 0.26);
-}
-
-button:first-of-type:active {
-    box-shadow: 0 6px 14px rgba(14, 165, 164, 0.18);
+    background: linear-gradient(135deg, #0369a1, #075985);
+    box-shadow: 0 12px 24px rgba(2, 132, 199, 0.35);
 }
 
 button:last-of-type {
-    background: #f59e0b;
-    box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);
+    background: linear-gradient(135deg, #4f46e5, #4338ca);
+    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
 }
 
 button:last-of-type:hover {
-    background: #d97706;
-    box-shadow: 0 14px 26px rgba(245, 158, 11, 0.26);
-}
-
-button:last-of-type:active {
-    box-shadow: 0 6px 14px rgba(245, 158, 11, 0.18);
+    background: linear-gradient(135deg, #4338ca, #3730a3);
+    box-shadow: 0 12px 24px rgba(79, 70, 229, 0.35);
 }
 
 @media (max-width: 420px) {

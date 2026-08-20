@@ -4,28 +4,28 @@
    Design Tokens & Color Palette
 --------------------------------------------------- */
 :root {
-    --bg-gradient: radial-gradient(circle at 50% 0%, #eef9fa 0%, #e2f5f6 50%, #d5f0f2 100%);
-    --card-bg: rgba(255, 255, 255, 0.85);
-    --card-border: rgba(0, 139, 139, 0.18);
-    --card-shadow: 0 16px 40px -10px rgba(0, 139, 139, 0.12), 0 8px 20px -6px rgba(0, 0, 0, 0.04);
+    --bg-gradient: radial-gradient(circle at 50% 0%, #e0e7ff 0%, #f8fafc 60%, #f1f5f9 100%);
+    --card-bg: rgba(255, 255, 255, 0.9);
+    --card-border: rgba(99, 102, 241, 0.2);
+    --card-shadow: 0 16px 40px -10px rgba(79, 70, 229, 0.12), 0 8px 20px -6px rgba(0, 0, 0, 0.04);
     
     --text-main: #0f172a;
     --text-muted: #64748b;
     --text-sub: #475569;
     
-    --primary: #008b8b;
-    --primary-hover: #006666;
-    --primary-light: rgba(0, 139, 139, 0.08);
-    --primary-glow: rgba(0, 139, 139, 0.25);
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --primary-light: rgba(99, 102, 241, 0.1);
+    --primary-glow: rgba(99, 102, 241, 0.25);
     
     --logout-bg: rgba(239, 68, 68, 0.08);
     --logout-text: #dc2626;
     --logout-border: rgba(239, 68, 68, 0.2);
     --logout-hover: #dc2626;
     
-    --avatar-bg: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
-    --avatar-ring: linear-gradient(135deg, #008b8b 0%, #22d3ee 100%);
-    --avatar-icon: #007676;
+    --avatar-bg: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+    --avatar-ring: linear-gradient(135deg, #4f46e5 0%, #0284c7 100%);
+    --avatar-icon: #4338ca;
     
     --font-heading: 'Anton', sans-serif;
     --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
